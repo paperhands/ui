@@ -20,7 +20,7 @@ class EChart extends js.Object {
 trait ChartOptions extends js.Object {
   val xAxis: AxisOptions
   val yAxis: AxisOptions
-  val series: js.Array[js.Object]
+  val series: js.Array[Series]
 }
 
 object ChartOptions {
@@ -67,10 +67,11 @@ trait Series extends js.Object {
 object Series {
   import js.JSConverters._
 
-  def apply(t: String, data: List[Int]): js.Object =
+  def apply(t: String, data: List[Int]): Series =
     js.Dynamic
       .literal(
         "type" -> t,
         "data" -> data.toJSArray
       )
+      .asInstanceOf[Series]
 }
