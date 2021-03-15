@@ -4,16 +4,22 @@ import org.scalajs.dom
 import org.scalajs.dom.document
 
 import app.paperhands.echarts._
+import app.paperhands.net.Net
 
-object TutorialApp {
-  def main(args: Array[String]): Unit =
-    dom.window.addEventListener("load", onload)
+import cats.effect._
 
-  def onload(e: dom.Event) = {
-    val d = document.getElementById("root")
-    val chart = echarts.init(d)
-    chart.setOption(opts)
-  }
+object TutorialApp extends IOApp {
+  def run(args: List[String]): IO[ExitCode] =
+    loop.as(ExitCode.Success)
+
+  def loop() =
+    for {
+      _ <- IO(println("hi"))
+      d <- IO(document.getElementById("root"))
+      chart <- IO(echarts.init(d))
+      _ <- IO(chart.setOption(opts))
+      _ <- Net.querySomething
+    } yield ()
 
   def opts =
     ChartOptions(

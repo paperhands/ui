@@ -12,11 +12,16 @@ import scala.scalajs.concurrent.JSExecutionContext.Implicits
 
 object Net {
   implicit def executionContext: ExecutionContext = Implicits.queue
+  implicit val cs = IO.contextShift(executionContext)
+  // implicit val timer = IO.timer(executionContext)
+  val backend = FetchCatsBackend[IO]()
 
-  def querySomething = {
+  def querySomething: IO[Unit] = {
     val request =
       basicRequest.get(uri"http://localhost:8888/api/v1/quote/details/gme/1day")
-    val backend = FetchBackend()
-    // val backend = FetchCatsBackend[IO]()
+    for {
+      response <- backend.send(request)
+      _ <- IO(println(response.body))
+    } yield ()
   }
 }
