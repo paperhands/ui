@@ -4,6 +4,7 @@ val circeVersion = "0.14.0-M4"
 val catsVersion = "2.4.2"
 val catsEffVersion = "2.3.3"
 val scalaJSDomVersion = "1.1.0"
+val diodeVersion = "1.1.14"
 
 ThisBuild / scalaVersion     := _scalaVersion
 ThisBuild / version          := "0.1.0"
@@ -29,8 +30,11 @@ lazy val root = (project in file("."))
 
       "org.typelevel" %% "cats-core" % catsVersion,
       "org.typelevel" %% "cats-effect" % catsEffVersion,
-
       "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
+      "io.suzaku" %%% "diode-react" % diodeVersion,
+      "com.github.japgolly.scalajs-react" %%% "core" % "1.7.7",
+      "com.github.japgolly.scalajs-react" %%% "extra" % "1.7.7",
+      "com.github.japgolly.scalajs-react" %%% "core" % "1.4.2",
 
        "io.monix" %% "minitest" % "2.9.3" % "test",
        "io.monix" %% "minitest-laws" % "2.9.3" % "test",
@@ -41,6 +45,8 @@ lazy val root = (project in file("."))
     ),
 
     npmDependencies in Compile ++= Seq(
+      "react" -> "17.0.0",
+      "react-dom" -> "17.0.0",
       "echarts" -> "5.0.2",
     ),
 
