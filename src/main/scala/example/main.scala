@@ -14,7 +14,7 @@ object TutorialApp extends IOApp {
     loop.as(ExitCode.Success)
 
   def loop() =
-    Chart.resource("hi").use { chart =>
+    Chart.resource("root").use { chart =>
       for {
         _ <- IO(println("hi"))
         _ <- chart.setOption(opts)

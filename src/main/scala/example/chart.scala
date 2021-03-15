@@ -31,7 +31,7 @@ object Chart {
 
   private def init(sel: String): IO[Chart] =
     for {
-      el <- IO(document.getElementById("root"))
+      el <- IO(document.getElementById(sel))
       echart <- IO(echarts.init(el))
     } yield new Chart(echart)
 }
