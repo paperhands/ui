@@ -16,7 +16,8 @@ object Net extends IOContext {
     val request =
       basicRequest.get(uri"http://localhost:8888/api/v1/quote/details/gme/1day")
     for {
-      response <- backend.send(request)
+      f <- backend.send(request).start
+      response <- f.join
       _ <- IO(println(response.body))
     } yield ()
   }

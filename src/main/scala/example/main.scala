@@ -3,6 +3,7 @@ package app.paperhands.main
 import org.scalajs.dom
 import org.scalajs.dom.document
 
+import app.paperhands.chart._
 import app.paperhands.echarts._
 import app.paperhands.net.Net
 
@@ -15,9 +16,8 @@ object TutorialApp extends IOApp {
   def loop() =
     for {
       _ <- IO(println("hi"))
-      d <- IO(document.getElementById("root"))
-      chart <- IO(echarts.init(d))
-      _ <- IO(chart.setOption(opts))
+      chart <- Chart.init("root")
+      _ <- chart.setOption(opts)
       _ <- Net.querySomething
     } yield ()
 
