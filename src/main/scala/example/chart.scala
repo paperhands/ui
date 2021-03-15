@@ -22,14 +22,14 @@ class Chart(echart: EChart) {
 object Chart {
   def resource(sel: String): Resource[IO, Chart] =
     Resource.make {
-      init(sel)
+      create(sel)
     } { chart =>
-      IO(println(s"removing chart from #$sel")) *>
+      IO(println(s"Removing chart from #$sel")) *>
         chart.clear *>
         chart.dispose
     }
 
-  private def init(sel: String): IO[Chart] =
+  def create(sel: String): IO[Chart] =
     for {
       el <- IO(document.getElementById(sel))
       echart <- IO(echarts.init(el))
