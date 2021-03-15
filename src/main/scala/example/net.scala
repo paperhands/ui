@@ -7,13 +7,9 @@ import cats.implicits._
 import sttp.client3._
 import sttp.client3.impl.cats._
 
-import scala.concurrent.ExecutionContext
-import scala.scalajs.concurrent.JSExecutionContext.Implicits
+import app.paperhands.io.IOContext
 
-object Net {
-  implicit def executionContext: ExecutionContext = Implicits.queue
-  implicit val cs = IO.contextShift(executionContext)
-  // implicit val timer = IO.timer(executionContext)
+object Net extends IOContext {
   val backend = FetchCatsBackend[IO]()
 
   def querySomething: IO[Unit] = {
