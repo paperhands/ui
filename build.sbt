@@ -35,6 +35,9 @@ lazy val root = (project in file("."))
        "io.monix" %% "minitest" % "2.9.3" % "test",
        "io.monix" %% "minitest-laws" % "2.9.3" % "test",
        "com.codecommit" %% "cats-effect-testing-minitest" % "0.5.2" % "test",
+
+       "com.github.julien-truffaut" %% "monocle-core"  % "3.0.0-M3",
+       "com.github.julien-truffaut" %% "monocle-macro" % "3.0.0-M3", // Not required for Scala 3
     ),
 
     npmDependencies in Compile += "echarts" -> "5.0.2",
