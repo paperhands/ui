@@ -1,18 +1,38 @@
-import Dependencies._
+val _scalaVersion = "2.13.5"
+val sttpVersion = "3.1.7"
+val circeVersion = "0.14.0-M4"
+val catsVersion = "2.4.2"
+val catsEffVersion = "2.3.3"
+val scalaJSDomVersion = "1.1.0"
 
-ThisBuild / scalaVersion     := "2.13.5"
-ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / scalaVersion     := _scalaVersion
+ThisBuild / version          := "0.1.0"
+ThisBuild / organization     := "app.paperhands"
+ThisBuild / organizationName := "paperhands"
 
 lazy val root = (project in file("."))
   .enablePlugins(ScalaJSBundlerPlugin)
   .settings(
     name := "paperhands-ui",
-    libraryDependencies += scalaTest % Test,
-    libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "1.1.0",
-    npmDependencies in Compile += "echarts" -> "5.0.2",
-    scalaJSUseMainModuleInitializer := true,
-  )
 
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+    libraryDependencies ++= Seq(
+      "io.circe"  %% "circe-core"     % circeVersion,
+      "io.circe"  %% "circe-generic"  % circeVersion,
+      "io.circe"  %% "circe-parser"   % circeVersion,
+      "io.circe"  %% "circe-literal"  % circeVersion,
+      "io.circe"  %% "circe-jawn"     % circeVersion,
+
+      "com.softwaremill.sttp.client3" %%% "core" % sttpVersion,
+      "com.softwaremill.sttp.client3" %%% "cats" % sttpVersion,
+
+      "org.typelevel" %% "cats-core" % catsVersion,
+      "org.typelevel" %% "cats-effect" % catsEffVersion,
+
+      "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
+    ),
+
+    npmDependencies in Compile += "echarts" -> "5.0.2",
+
+    scalaJSUseMainModuleInitializer := true,
+    Global / onChangedBuildSource := ReloadOnSourceChanges,
+  )
