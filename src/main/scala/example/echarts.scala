@@ -14,6 +14,8 @@ object echarts extends js.Object {
 @JSImport("echarts", "echartsInstance")
 class EChart extends js.Object {
   def setOption(o: ChartOptions): Unit = js.native
+  def showLoading: Unit = js.native
+  def hideLoading: Unit = js.native
 }
 
 @js.native
