@@ -40,7 +40,9 @@ lazy val root = (project in file("."))
        "com.github.julien-truffaut" %% "monocle-macro" % "3.0.0-M3", // Not required for Scala 3
     ),
 
-    npmDependencies in Compile += "echarts" -> "5.0.2",
+    npmDependencies in Compile ++= Seq(
+      "echarts" -> "5.0.2",
+    ),
 
     scalaJSUseMainModuleInitializer := true,
     Global / onChangedBuildSource := ReloadOnSourceChanges,
