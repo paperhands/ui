@@ -16,6 +16,8 @@ class EChart extends js.Object {
   def setOption(o: ChartOptions): Unit = js.native
   def showLoading: Unit = js.native
   def hideLoading: Unit = js.native
+  def clear: Unit = js.native
+  def dispose: Unit = js.native
 }
 
 @js.native

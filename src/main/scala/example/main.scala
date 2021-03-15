@@ -14,12 +14,13 @@ object TutorialApp extends IOApp {
     loop.as(ExitCode.Success)
 
   def loop() =
-    for {
-      _ <- IO(println("hi"))
-      chart <- Chart.init("root")
-      _ <- chart.setOption(opts)
-      _ <- Net.querySomething
-    } yield ()
+    Chart.resource("hi").use { chart =>
+      for {
+        _ <- IO(println("hi"))
+        _ <- chart.setOption(opts)
+        // _ <- Net.querySomething
+      } yield ()
+    }
 
   def opts =
     ChartOptions(
