@@ -15,6 +15,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "paperhands-ui",
 
+    testFrameworks += new TestFramework("minitest.runner.Framework"),
+
     libraryDependencies ++= Seq(
       "io.circe"  %% "circe-core"     % circeVersion,
       "io.circe"  %% "circe-generic"  % circeVersion,
@@ -29,6 +31,10 @@ lazy val root = (project in file("."))
       "org.typelevel" %% "cats-effect" % catsEffVersion,
 
       "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
+
+       "io.monix" %% "minitest" % "2.9.3" % "test",
+       "io.monix" %% "minitest-laws" % "2.9.3" % "test",
+       "com.codecommit" %% "cats-effect-testing-minitest" % "0.5.2" % "test",
     ),
 
     npmDependencies in Compile += "echarts" -> "5.0.2",
