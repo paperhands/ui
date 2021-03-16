@@ -19,19 +19,23 @@ lazy val root = (project in file("."))
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      "io.circe"  %% "circe-core"     % circeVersion,
-      "io.circe"  %% "circe-generic"  % circeVersion,
-      "io.circe"  %% "circe-parser"   % circeVersion,
-      "io.circe"  %% "circe-literal"  % circeVersion,
-      "io.circe"  %% "circe-jawn"     % circeVersion,
+      /* "io.circe"  %% "circe-core"     % circeVersion, */
+      /* "io.circe"  %% "circe-generic"  % circeVersion, */
+      /* "io.circe"  %% "circe-parser"   % circeVersion, */
+      /* "io.circe"  %% "circe-literal"  % circeVersion, */
+      /* "io.circe"  %% "circe-jawn"     % circeVersion, */
 
-      "com.softwaremill.sttp.client3" %%% "core" % sttpVersion,
-      "com.softwaremill.sttp.client3" %%% "cats" % sttpVersion,
+      /* "com.softwaremill.sttp.client3" %%% "core" % sttpVersion, */
+      /* "com.softwaremill.sttp.client3" %%% "cats" % sttpVersion, */
+
+      "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
 
       "org.typelevel" %% "cats-core" % catsVersion,
       "org.typelevel" %% "cats-effect" % catsEffVersion,
-      "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
+
+      "io.suzaku" %%% "diode" % diodeVersion,
       "io.suzaku" %%% "diode-react" % diodeVersion,
+
       "com.github.japgolly.scalajs-react" %%% "core" % "1.7.7",
       "com.github.japgolly.scalajs-react" %%% "extra" % "1.7.7",
       "com.github.japgolly.scalajs-react" %%% "ext-cats" % "1.7.7",
