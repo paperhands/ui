@@ -4,6 +4,11 @@ import cats.effect._
 import cats.effect.concurrent.Ref
 import app.paperhands.io.IOContext
 
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.CatsReact._
+import japgolly.scalajs.react.extra.router._
+import japgolly.scalajs.react.vdom.html_<^._
+
 // create component
 // render via IO monad, get a tree
 // stateless component can have implicit counter for querying state
@@ -11,36 +16,53 @@ import app.paperhands.io.IOContext
 // on update SVar updates its version counter
 // on get SVar receives impcicit Ref that marks component dirty or not based on version
 
-class SVar[A](state: Ref[IO, A], version: Ref[IO, Int]) {
-  def get: IO[A] =
-    state.get
+case class State(items: List[String], text: String)
 
-  def set(v: A): IO[Unit] =
-    version.update(_ + 1) *>
-      state.set(v)
+object Cmp {
+  val TodoList = ScalaComponent
+    .builder[List[String]]
+    .render_P(items => <.ul(items.map(<.li(_)): _*))
+    .build
 
-  def update(f: A => A): IO[Unit] =
-    version.update(_ + 1) *>
-      state.update(f(_))
-}
+  val ST =
+    ReactS.Fix[State] // Let's use a helper so that we don't have to specify the
+  //   state type everywhere.
 
-object SVar extends IOContext {
-  def apply[A](v: A): IO[SVar[A]] =
-    for {
-      state <- Ref.of[IO, A](v)
-      version <- Ref.of[IO, Int](0)
-    } yield new SVar[A](state, version)
-}
+  def acceptChange(e: ReactEventFromInput) =
+    ST.mod(
+      _.copy(text = e.target.value)
+    ) // A pure state modification. State value is provided when run.
 
-class Component(tag: String, args: Map[String, IO[String]]) {
-  def render() =
-    IO.unit
+  def handleSubmit(e: ReactEventFromInput) = (
+    ST.retM(
+      e.preventDefaultCB
+    ) // Lift a Callback effect into a shape that allows composition
+    //   with state modification.
+      >> // Use >> to compose. It's flatMap (>>=) that ignores input.
+        ST.mod(s => State(s.items :+ s.text, ""))
+          .liftCB // Here we lift a pure state modification into a shape that
+  )
 
-  def mount(target: String) =
-    IO.unit
-}
-
-object Component {
-  def apply(tag: String, args: Map[String, IO[String]]): IO[Component] =
-    IO(new Component(tag, args))
+  val TodoApp = ScalaComponent
+    .builder[Unit]
+    .initialState(State(Nil, ""))
+    .renderS(($, s) =>
+      <.div(
+        <.h3("TODO"),
+        TodoList(s.items),
+        <.form(
+          ^.onSubmit ==> $.runStateFn(
+            handleSubmit
+          ), // runState runs a state monad and applies the result.
+          <.input( // runStateFn is similar but takes a function-to-a-state-monad.
+            ^.onChange ==> $.runStateFn(
+              acceptChange
+            ), // In these cases, the function will be fed the JS event.
+            ^.value := s.text
+          ),
+          <.button("Add #", s.items.length + 1)
+        )
+      )
+    )
+    .build
 }

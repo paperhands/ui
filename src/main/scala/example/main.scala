@@ -8,9 +8,9 @@ import org.scalajs.dom
 import scalajs.js
 import scalajs.js.annotation._
 import japgolly.scalajs.react.vdom.html_<^._
-import app.paperhands.AppRouter
+import app.paperhands.router.AppRouter
 
-object ReactApp  {
+object ReactApp {
 
   //@JSExport
   def main(args: Array[String]): Unit = {

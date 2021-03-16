@@ -34,7 +34,8 @@ lazy val root = (project in file("."))
       "io.suzaku" %%% "diode-react" % diodeVersion,
       "com.github.japgolly.scalajs-react" %%% "core" % "1.7.7",
       "com.github.japgolly.scalajs-react" %%% "extra" % "1.7.7",
-      "com.github.japgolly.scalajs-react" %%% "core" % "1.4.2",
+      "com.github.japgolly.scalajs-react" %%% "ext-cats" % "1.7.7",
+      "com.github.japgolly.scalajs-react" %%% "ext-monocle-cats" % "1.7.7",
 
        "io.monix" %% "minitest" % "2.9.3" % "test",
        "io.monix" %% "minitest-laws" % "2.9.3" % "test",
