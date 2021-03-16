@@ -1,20 +1,9 @@
 package app.paperhands.component
 
-import cats.effect._
-import cats.effect.concurrent.Ref
-import app.paperhands.io.IOContext
-
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.CatsReact._
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
-
-// create component
-// render via IO monad, get a tree
-// stateless component can have implicit counter for querying state
-// state is stored in a SVar type
-// on update SVar updates its version counter
-// on get SVar receives impcicit Ref that marks component dirty or not based on version
 
 case class State(items: List[String], text: String)
 
