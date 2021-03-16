@@ -15,35 +15,43 @@ import app.paperhands.echarts._
 object Chart {
   case class Props(
       proxy: ModelProxy[AppState],
-      ctl: RouterCtl[AppRouter.Page]
+      ctl: RouterCtl[AppRouter.Page],
+      opts: ChartOptions
   )
 
   case class State(echart: Option[EChart])
 
-  class Backend($ : BackendScope[Props, State]) {
-    def opts =
-      ChartOptions(
-        AxisOptions(
-          "category",
-          List("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-        ),
-        AxisOptions("value", List()),
-        List(
-          Series("line", List(150, 230, 224, 218, 135, 147, 260))
-        )
+  val defaultOpts =
+    ChartOptions(
+      AxisOptions(
+        "category",
+        List("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+      ),
+      AxisOptions("value", List()),
+      List(
+        Series("line", List(150, 230, 224, 218, 135, 147, 260))
       )
+    )
+
+  class Backend($ : BackendScope[Props, State]) {
+    def initChart(p: Props): Callback =
+      $.getDOMNode.map { dom =>
+        val el = dom.toElement.get.asInstanceOf[HTMLElement]
+        val chart = echarts.init(el)
+        chart.setOption(p.opts)
+        chart
+      } >>= ((c: EChart) => $.modState(_.copy(echart = Some(c))))
 
     def mounted: Callback =
       Callback.log("Mounted todo") >>
-        $.getDOMNode.map { dom =>
-          val el = dom.toElement.get.asInstanceOf[HTMLElement]
-          val chart = echarts.init(el)
-          chart.setOption(opts)
-          chart
-        } >>= ((c: EChart) => $.modState(_.copy(echart = Some(c))))
+        ($.props >>= initChart)
 
     def update(np: Props): Callback = {
-      Callback.log("Got new props")
+      $.state.map { state =>
+        println(s"checking state $state")
+        state.echart.foreach(_.setOption(np.opts))
+      } >>
+        Callback.log("Got new props")
     }
 
     def render(props: Props, state: State): VdomElement = {

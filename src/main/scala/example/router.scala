@@ -28,7 +28,7 @@ object AppRouter {
   }
 
   def renderDetailsPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => Chart(Chart.Props(proxy, ctl)))
+    connection(proxy => Chart(Chart.Props(proxy, ctl, Chart.defaultOpts)))
   }
 
   val baseUrl = BaseUrl.fromWindowOrigin_/
