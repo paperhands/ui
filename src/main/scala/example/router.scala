@@ -6,6 +6,7 @@ import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
 import app.paperhands.component._
+import app.paperhands.diode.AppCircuit
 
 object IndexPanel {
   case class Props(
@@ -25,6 +26,8 @@ object AppRouter {
   sealed trait Page
   case object Index extends Page
 
+  val connection = AppCircuit.connect(m => m.state)
+
   val routerConfig = RouterConfigDsl[Page].buildConfig { dsl =>
     import dsl._
     (trimSlashes
@@ -33,7 +36,7 @@ object AppRouter {
   }
 
   def renderIndexPage(ctl: RouterCtl[Page]) = {
-    IndexPanel()
+    connection(proxy => IndexPanel(IndexPanel.Props(proxy, ctl)))
   }
 
   val baseUrl = BaseUrl.fromWindowOrigin_/

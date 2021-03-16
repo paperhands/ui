@@ -5,6 +5,11 @@ val catsVersion = "2.4.2"
 val catsEffVersion = "2.3.3"
 val scalaJSDomVersion = "1.1.0"
 val diodeVersion = "1.1.14"
+val scalaReactVersion = "1.7.7"
+val monocleVersion = "3.0.0-M3"
+val minitestVersion = "2.9.3"
+val reactVersion = "17.0.0"
+val echartsVersion = "5.0.2"
 
 ThisBuild / scalaVersion     := _scalaVersion
 ThisBuild / version          := "0.1.0"
@@ -36,23 +41,23 @@ lazy val root = (project in file("."))
       "io.suzaku" %%% "diode" % diodeVersion,
       "io.suzaku" %%% "diode-react" % diodeVersion,
 
-      "com.github.japgolly.scalajs-react" %%% "core" % "1.7.7",
-      "com.github.japgolly.scalajs-react" %%% "extra" % "1.7.7",
-      "com.github.japgolly.scalajs-react" %%% "ext-cats" % "1.7.7",
-      "com.github.japgolly.scalajs-react" %%% "ext-monocle-cats" % "1.7.7",
+      "com.github.japgolly.scalajs-react" %%% "core" % scalaReactVersion,
+      "com.github.japgolly.scalajs-react" %%% "extra" % scalaReactVersion,
+      "com.github.japgolly.scalajs-react" %%% "ext-cats" % scalaReactVersion,
+      "com.github.japgolly.scalajs-react" %%% "ext-monocle-cats" % scalaReactVersion,
 
-       "io.monix" %% "minitest" % "2.9.3" % "test",
-       "io.monix" %% "minitest-laws" % "2.9.3" % "test",
+       "io.monix" %% "minitest" % minitestVersion % "test",
+       "io.monix" %% "minitest-laws" % minitestVersion % "test",
        "com.codecommit" %% "cats-effect-testing-minitest" % "0.5.2" % "test",
 
-       "com.github.julien-truffaut" %% "monocle-core"  % "3.0.0-M3",
-       "com.github.julien-truffaut" %% "monocle-macro" % "3.0.0-M3", // Not required for Scala 3
+       "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
+       "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3
     ),
 
     npmDependencies in Compile ++= Seq(
-      "react" -> "17.0.0",
-      "react-dom" -> "17.0.0",
-      "echarts" -> "5.0.2",
+      "react"     -> reactVersion,
+      "react-dom" -> reactVersion,
+      "echarts"   -> echartsVersion,
     ),
 
     scalaJSUseMainModuleInitializer := true,
