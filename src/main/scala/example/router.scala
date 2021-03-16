@@ -11,18 +11,24 @@ import app.paperhands.diode.AppCircuit
 object AppRouter {
   sealed trait Page
   case object Index extends Page
+  case object Details extends Page
 
   val connection = AppCircuit.connect(m => m.state)
 
   val routerConfig = RouterConfigDsl[Page].buildConfig { dsl =>
     import dsl._
     (trimSlashes
-      | staticRoute(root, Index) ~> renderR(renderIndexPage))
+      | staticRoute(root, Index) ~> renderR(renderIndexPage)
+      | staticRoute("#chart", Details) ~> renderR(renderDetailsPage))
       .notFound(redirectToPage(Index)(Redirect.Replace))
   }
 
   def renderIndexPage(ctl: RouterCtl[Page]) = {
     connection(proxy => Todo(Todo.Props(proxy, ctl)))
+  }
+
+  def renderDetailsPage(ctl: RouterCtl[Page]) = {
+    connection(proxy => Chart(Chart.Props(proxy, ctl)))
   }
 
   val baseUrl = BaseUrl.fromWindowOrigin_/
