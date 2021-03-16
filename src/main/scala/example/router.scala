@@ -5,7 +5,7 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
-import app.paperhands.component._
+import app.paperhands.components._
 import app.paperhands.diode.AppCircuit
 
 object AppRouter {

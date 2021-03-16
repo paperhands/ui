@@ -1,4 +1,4 @@
-package app.paperhands.component
+package app.paperhands.components
 
 import diode.react.ModelProxy
 
@@ -15,7 +15,7 @@ object Todo {
       ctl: RouterCtl[AppRouter.Page]
   )
 
-  case class State(items: List[String], text: String)
+  case class State(text: String)
 
   val TodoList = ScalaComponent
     .builder[List[String]]
@@ -29,21 +29,29 @@ object Todo {
     def acceptChange(e: ReactEventFromInput) =
       $.modState(_.copy(text = e.target.value))
 
-    def handleSubmit(e: ReactEventFromInput) =
+    def handleSubmit(addItemCB: String => Callback, text: String)(
+        e: ReactEventFromInput
+    ) =
       e.preventDefaultCB >>
-        $.modState(s => State(s.items :+ s.text, ""))
+        addItemCB(text) >>
+        $.modState(_ => State(""))
 
     def render(props: Props, state: State): VdomElement = {
+      val proxy = props.proxy()
+      val items = proxy.items
+      val addItemCB: String => Callback = text =>
+        props.proxy.dispatchCB(AddItem(text))
+
       <.div(
         <.h3("TODO"),
-        TodoList(state.items),
+        TodoList(items),
         <.form(
-          ^.onSubmit ==> handleSubmit,
+          ^.onSubmit ==> handleSubmit(addItemCB, state.text),
           <.input(
             ^.onChange ==> acceptChange,
             ^.value := state.text
           ),
-          <.button("Add #", state.items.length + 1)
+          <.button("Add #", items.length + 1)
         )
       )
     }
@@ -51,7 +59,7 @@ object Todo {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(Nil, ""))
+    .initialState(State(""))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .build
