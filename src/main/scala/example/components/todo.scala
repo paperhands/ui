@@ -37,12 +37,14 @@ object Todo {
         $.modState(_ => State(""))
 
     def render(props: Props, state: State): VdomElement = {
+      val ctl = props.ctl
       val proxy = props.proxy()
       val items = proxy.items
       val addItemCB: String => Callback = text =>
         props.proxy.dispatchCB(AddItem(text))
 
       <.div(
+        ctl.link(AppRouter.Details)("got to details"),
         <.h3("TODO"),
         TodoList(items),
         <.form(

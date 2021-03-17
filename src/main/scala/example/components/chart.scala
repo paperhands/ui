@@ -19,19 +19,11 @@ object Chart {
       opts: ChartOptions
   )
 
-  case class State(echart: Option[EChart])
+  object Props {
+    def fromTimeSeries() = {}
+  }
 
-  val defaultOpts =
-    ChartOptions(
-      AxisOptions(
-        "category",
-        List("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-      ),
-      AxisOptions("value", List()),
-      List(
-        Series("line", List(150, 230, 224, 218, 135, 147, 260))
-      )
-    )
+  case class State(echart: Option[EChart])
 
   class Backend($ : BackendScope[Props, State]) {
     def setChart(c: EChart): Callback =
@@ -46,7 +38,7 @@ object Chart {
       } >>= setChart
 
     def mounted: Callback =
-      Callback.log("Mounted todo") >>
+      Callback.log("Mounted chart") >>
         ($.props >>= initChart)
 
     def update(np: Props): Callback = {
