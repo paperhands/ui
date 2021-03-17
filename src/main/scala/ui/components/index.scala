@@ -4,12 +4,15 @@ import diode.react.ModelProxy
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router._
+import japgolly.scalajs.react.extra.Ajax
 import japgolly.scalajs.react.vdom.html_<^._
 
 import app.paperhands.router.AppRouter
 import app.paperhands.diode._
+import app.paperhands.config.Config
+import app.paperhands.model._
 
-object Todo {
+object IndexPage {
   case class Props(
       proxy: ModelProxy[AppState],
       ctl: RouterCtl[AppRouter.Page]
@@ -17,14 +20,26 @@ object Todo {
 
   case class State(text: String)
 
-  val TodoList = ScalaComponent
+  val IndexPageList = ScalaComponent
     .builder[List[String]]
     .render_P(items => <.ul(items.map(<.li(_)): _*))
     .build
 
   class Backend($ : BackendScope[Props, State]) {
+    def loadTrending: Callback =
+      Ajax(
+        "GET",
+        Config.api.prefixPath("/api/v1/content/sample/gme")
+      ).setRequestContentTypeJsonUtf8
+        .send("")
+        .onComplete { xhr =>
+          Callback.log(xhr)
+        }
+        .asCallback
+
     def mounted: Callback =
-      Callback.log("Mounted todo")
+      Callback.log("Mounted index") >>
+        loadTrending
 
     def acceptChange(e: ReactEventFromInput) =
       $.modState(_.copy(text = e.target.value))
@@ -46,7 +61,7 @@ object Todo {
       <.div(
         ctl.link(AppRouter.Details("gme", "1day"))("got to details"),
         <.h3("TODO"),
-        TodoList(items),
+        IndexPageList(items),
         <.form(
           ^.onSubmit ==> handleSubmit(addItemCB),
           <.input(

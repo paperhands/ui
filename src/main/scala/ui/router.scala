@@ -27,7 +27,7 @@ object AppRouter {
   }
 
   def renderIndexPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => Todo(Todo.Props(proxy, ctl)))
+    connection(proxy => IndexPage(IndexPage.Props(proxy, ctl)))
   }
 
   def renderDetailsPage(
