@@ -29,11 +29,11 @@ object Todo {
     def acceptChange(e: ReactEventFromInput) =
       $.modState(_.copy(text = e.target.value))
 
-    def handleSubmit(addItemCB: String => Callback, text: String)(
+    def handleSubmit(addItemCB: String => Callback)(
         e: ReactEventFromInput
     ) =
       e.preventDefaultCB >>
-        addItemCB(text) >>
+        ($.state.map(_.text) >>= addItemCB) >>
         $.modState(_ => State(""))
 
     def render(props: Props, state: State): VdomElement = {
@@ -46,7 +46,7 @@ object Todo {
         <.h3("TODO"),
         TodoList(items),
         <.form(
-          ^.onSubmit ==> handleSubmit(addItemCB, state.text),
+          ^.onSubmit ==> handleSubmit(addItemCB),
           <.input(
             ^.onChange ==> acceptChange,
             ^.value := state.text
