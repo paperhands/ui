@@ -12,4 +12,10 @@ object Net {
 
   def getTrending =
     get("api/v1/quote/trending").send("")
+
+  def getDetails(symbol: String, period: String) =
+    get(s"api/v1/quote/details/$symbol/$period").send("")
+
+  def getSamples(symbol: String) =
+    get(s"api/v1/content/sample/$symbol").send("")
 }
