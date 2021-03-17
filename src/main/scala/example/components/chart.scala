@@ -34,24 +34,27 @@ object Chart {
     )
 
   class Backend($ : BackendScope[Props, State]) {
+    def setChart(c: EChart): Callback =
+      $.modState(_.copy(echart = Some(c)))
+
     def initChart(p: Props): Callback =
       $.getDOMNode.map { dom =>
         val el = dom.toElement.get.asInstanceOf[HTMLElement]
         val chart = echarts.init(el)
         chart.setOption(p.opts)
         chart
-      } >>= ((c: EChart) => $.modState(_.copy(echart = Some(c))))
+      } >>= setChart
 
     def mounted: Callback =
       Callback.log("Mounted todo") >>
         ($.props >>= initChart)
 
     def update(np: Props): Callback = {
-      $.state.map { state =>
-        println(s"checking state $state")
-        state.echart.foreach(_.setOption(np.opts))
-      } >>
-        Callback.log("Got new props")
+      Callback.log("Got new props") >>
+        $.state.map { state =>
+          println(s"checking state $state")
+          state.echart.foreach(_.setOption(np.opts))
+        }
     }
 
     def render(props: Props, state: State): VdomElement = {
