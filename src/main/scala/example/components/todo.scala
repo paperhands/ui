@@ -44,7 +44,7 @@ object Todo {
         props.proxy.dispatchCB(AddItem(text))
 
       <.div(
-        ctl.link(AppRouter.Details)("got to details"),
+        ctl.link(AppRouter.Details("gme", "1day"))("got to details"),
         <.h3("TODO"),
         TodoList(items),
         <.form(

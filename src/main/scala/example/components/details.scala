@@ -15,7 +15,9 @@ import app.paperhands.echarts._
 object DetailsPage {
   case class Props(
       proxy: ModelProxy[AppState],
-      ctl: RouterCtl[AppRouter.Page]
+      ctl: RouterCtl[AppRouter.Page],
+      symbol: String,
+      interval: String
   )
 
   case class State()
@@ -37,6 +39,9 @@ object DetailsPage {
       val ctl = props.ctl
 
       <.div(
+        <.h1(
+          s"Details for ${props.symbol} for ${props.interval}"
+        ),
         Chart(Chart.Props(props.proxy, props.ctl, defaultOpts)),
         ctl.link(AppRouter.Index)("got to index")
       )
