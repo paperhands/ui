@@ -1,3 +1,12 @@
 package app.paperhands.model
 
-case class Trending(id: String)
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSName
+
+trait Trending extends js.Object {
+  val symbol: String
+  val desc: String
+  val pos: Int
+  @JSName("change_perc") val changePerc: Double
+  @JSName("old_pos") val oldPos: Int
+}
