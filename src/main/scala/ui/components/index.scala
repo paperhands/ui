@@ -18,7 +18,7 @@ object IndexPage {
       ctl: RouterCtl[AppRouter.Page]
   )
 
-  case class State(text: String)
+  case class State(loading: Boolean, text: String)
 
   val IndexPageList = ScalaComponent
     .builder[List[String]]
@@ -33,12 +33,23 @@ object IndexPage {
       ).setRequestContentTypeJsonUtf8
         .send("")
         .onComplete { xhr =>
-          Callback.log(xhr)
+          stopLoading >>
+            Callback.log(xhr)
         }
         .asCallback
 
+    def setLoading(v: Boolean) =
+      $.modState(_.copy(loading = v))
+
+    def startLoading =
+      setLoading(true)
+
+    def stopLoading =
+      setLoading(false)
+
     def mounted: Callback =
       Callback.log("Mounted index") >>
+        startLoading >>
         loadTrending
 
     def acceptChange(e: ReactEventFromInput) =
@@ -49,21 +60,22 @@ object IndexPage {
     ) =
       e.preventDefaultCB >>
         ($.state.map(_.text) >>= addItemCB) >>
-        $.modState(_ => State(""))
+        $.modState(_ => State(false, ""))
+
+    def addItemCB(props: Props)(text: String) =
+      props.proxy.dispatchCB(AddItem(text))
 
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
       val proxy = props.proxy()
       val items = proxy.items
-      val addItemCB: String => Callback = text =>
-        props.proxy.dispatchCB(AddItem(text))
 
       <.div(
         ctl.link(AppRouter.Details("gme", "1day"))("got to details"),
         <.h3("TODO"),
         IndexPageList(items),
         <.form(
-          ^.onSubmit ==> handleSubmit(addItemCB),
+          ^.onSubmit ==> handleSubmit(addItemCB(props)),
           <.input(
             ^.onChange ==> acceptChange,
             ^.value := state.text
@@ -76,7 +88,7 @@ object IndexPage {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(""))
+    .initialState(State(false, ""))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .build
