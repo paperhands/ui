@@ -53,11 +53,11 @@ trait AxisOptions extends js.Object {
 object AxisOptions {
   import js.JSConverters._
 
-  def apply(t: String, data: List[String]): AxisOptions =
+  def apply(t: String, data: js.Array[String]): AxisOptions =
     js.Dynamic
       .literal(
         `type` = t,
-        data = data.toJSArray
+        data = data
       )
       .asInstanceOf[AxisOptions]
 }
@@ -71,11 +71,11 @@ trait Series extends js.Object {
 object Series {
   import js.JSConverters._
 
-  def apply(t: String, data: List[Int]): Series =
+  def apply(t: String, data: js.Array[Int]): Series =
     js.Dynamic
       .literal(
         "type" -> t,
-        "data" -> data.toJSArray
+        "data" -> data
       )
       .asInstanceOf[Series]
 }

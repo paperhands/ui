@@ -31,11 +31,11 @@ object DetailsPage {
     ChartOptions(
       AxisOptions(
         "category",
-        List("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+        js.Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
       ),
-      AxisOptions("value", List()),
+      AxisOptions("value", js.Array()),
       List(
-        Series("line", List(150, 230, 224, 218, 135, 147, 260))
+        Series("line", js.Array(150, 230, 224, 218, 135, 147, 260))
       )
     )
 
@@ -67,6 +67,32 @@ object DetailsPage {
         startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
+    def formatPopularity(details: Details) = {
+      val symbol = details.popularity.symbol
+      val engagements = details.popularity.engagements
+      val mentions = details.popularity.mentions
+
+      <.span(
+        s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
+      )
+    }
+
+    def optsFromTimeseries(ts: Timeseries) = {
+      ChartOptions(
+        AxisOptions(
+          "category",
+          ts.titles
+        ),
+        AxisOptions("value", js.Array()),
+        List(
+          Series("line", ts.data)
+        )
+      )
+    }
+
+    def chartFromTimeseries(ts: Timeseries) =
+      Chart(Chart.Props(optsFromTimeseries(ts)))
+
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
 
@@ -75,6 +101,11 @@ object DetailsPage {
         <.h1(
           s"Details for ${props.symbol} for ${props.interval}"
         ),
+        state.details.map(formatPopularity),
+        state.details.map(_.engagements).map(chartFromTimeseries),
+        state.details.map(_.mentions).map(chartFromTimeseries),
+        state.details.map(_.sentiments).map(chartFromTimeseries),
+        state.details.map(_.price).map(chartFromTimeseries),
         Chart(Chart.Props(defaultOpts)),
         ctl.link(AppRouter.Index)("got to index")
       )
