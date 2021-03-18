@@ -5,6 +5,7 @@ public: setup-git
 
 public-copy: public
 	cp -f static/index.html public/index.html
+	cp -f static/_redirects public/_redirects
 	cp -f target/scala-2.13/scalajs-bundler/main/paperhands-ui-opt-bundle.js public/js/
 	cp -f target/scala-2.13/scalajs-bundler/main/paperhands-ui-opt-bundle.js.map public/js/
 
