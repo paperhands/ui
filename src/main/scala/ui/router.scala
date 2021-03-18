@@ -20,7 +20,7 @@ object AppRouter {
     (trimSlashes
       | staticRoute(root, Index) ~> renderR(renderIndexPage)
       | dynamicRouteCT(
-        ("details" / string("[a-z]+") / string("[0-9]+[a-z]+"))
+        ("#details" / string("[a-z]+") / string("[0-9]+[a-z]+"))
           .caseClass[Details]
       ) ~> dynRenderR(renderDetailsPage))
       .notFound(redirectToPage(Index)(Redirect.Replace))
