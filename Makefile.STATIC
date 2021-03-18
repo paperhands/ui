@@ -7,7 +7,7 @@ endif
 public:
 	git clone -b generated $(PUBLIC_URL) public
 
-copy:
+public-copy: public
 	cp -f static/index.html public/index.html
 	cp -f target/scala-2.13/scalajs-bundler/main/paperhands-ui-opt-bundle.js public/js/
 	cp -f target/scala-2.13/scalajs-bundler/main/paperhands-ui-opt-bundle.js.map public/js/
@@ -15,3 +15,14 @@ copy:
 setup-git:
 	git config --global user.email "$(GIT_EMAIL)"
 	git config --global user.name "$(GIT_NAME)"
+
+public-commit: setup-git public
+	cd public \
+	&& git add  . \
+	&& (git commit -a -m "Site updated at $(shell date)"  || echo "Nothing to commit") \
+	&& cd ..
+
+public-push: setup-git public
+	cd public \
+	&& git push \
+	&& cd ..

@@ -5,3 +5,4 @@ include ./Makefile.ALPINE
 include ./Makefile.SCALA
 include ./Makefile.NIX
 include ./Makefile.DEV
+include ./Makefile.STATIC
