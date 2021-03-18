@@ -1,4 +1,4 @@
-PUBLIC_URL = https://$(GH_TOKEN)@github.com/paperhansd/ui.git
+PUBLIC_URL = https://$(GH_TOKEN)@github.com/paperhands/ui.git
 
 public: setup-git
 	git clone -b generated $(PUBLIC_URL) public
