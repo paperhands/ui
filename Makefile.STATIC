@@ -15,12 +15,7 @@ setup-git:
 	git config --global user.name "$(GIT_NAME)"
 
 public-commit: setup-git public
-	cd public \
-	&& git add  . \
-	&& (git commit -a -m "Site updated at $(shell date)"  || echo "Nothing to commit") \
-	&& cd ..
+	cd public && git add  .  && (git commit -a -m "Site updated at $(shell date)"  || echo "Nothing to commit") && cd ..
 
 public-push: setup-git public
-	cd public \
-	&& git push \
-	&& cd ..
+	cd public && git push && cd ..
