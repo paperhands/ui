@@ -15,7 +15,6 @@ import app.paperhands.model._
 import app.paperhands.net._
 
 import scala.scalajs.js
-import scala.scalajs.js.JSON
 
 object DetailsPage {
   case class Props(
@@ -29,7 +28,7 @@ object DetailsPage {
 
   class Backend($ : BackendScope[Props, State]) {
     def setDetails(body: String): Callback = {
-      val details = JSON.parse(body).asInstanceOf[Details]
+      val details = Model.as[Details](body)
       $.modState(_.copy(details = Some(details)))
     }
 

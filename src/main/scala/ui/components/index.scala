@@ -13,7 +13,6 @@ import app.paperhands.model._
 import app.paperhands.net._
 
 import scala.scalajs.js
-import scala.scalajs.js.JSON
 
 object IndexPage {
   case class Props(
@@ -47,7 +46,7 @@ object IndexPage {
 
   class Backend($ : BackendScope[Props, State]) {
     def setTrending(body: String): Callback = {
-      val trending = JSON.parse(body).asInstanceOf[js.Array[Trending]]
+      val trending = Model.as[js.Array[Trending]](body)
       $.modState(_.copy(trending = trending.toSeq))
     }
 
