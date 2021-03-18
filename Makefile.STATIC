@@ -4,7 +4,7 @@ else
 PUBLIC_URL = git@github.com:paperhands/ui.git
 endif
 
-public:
+public: setup-git
 	git clone -b generated $(PUBLIC_URL) public
 
 public-copy: public
@@ -13,6 +13,7 @@ public-copy: public
 	cp -f target/scala-2.13/scalajs-bundler/main/paperhands-ui-opt-bundle.js.map public/js/
 
 setup-git:
+	ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 	git config --global user.email "$(GIT_EMAIL)"
 	git config --global user.name "$(GIT_NAME)"
 
