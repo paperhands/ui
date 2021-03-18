@@ -9,7 +9,6 @@ import japgolly.scalajs.react.vdom.html_<^._
 
 import app.paperhands.router.AppRouter
 import app.paperhands.diode._
-import app.paperhands.config.Config
 import app.paperhands.model._
 import app.paperhands.net._
 

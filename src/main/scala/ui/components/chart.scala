@@ -14,8 +14,6 @@ import app.paperhands.echarts._
 
 object Chart {
   case class Props(
-      proxy: ModelProxy[AppState],
-      ctl: RouterCtl[AppRouter.Page],
       opts: ChartOptions
   )
 
@@ -50,8 +48,6 @@ object Chart {
     }
 
     def render(props: Props, state: State): VdomElement = {
-      val proxy = props.proxy()
-
       <.div(
         ^.className := "chart-target"
       )
