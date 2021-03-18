@@ -27,18 +27,6 @@ object DetailsPage {
 
   case class State(loading: Boolean, details: Option[Details])
 
-  val defaultOpts =
-    ChartOptions(
-      AxisOptions(
-        "category",
-        js.Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-      ),
-      AxisOptions("value", js.Array()),
-      List(
-        Series("line", js.Array(150, 230, 224, 218, 135, 147, 260))
-      )
-    )
-
   class Backend($ : BackendScope[Props, State]) {
     def setDetails(body: String): Callback = {
       val details = JSON.parse(body).asInstanceOf[Details]
@@ -97,6 +85,7 @@ object DetailsPage {
       val ctl = props.ctl
 
       <.div(
+        ctl.link(AppRouter.Index)("got to index"),
         <.span("LOADING").when(state.loading),
         <.h1(
           s"Details for ${props.symbol} for ${props.interval}"
@@ -105,9 +94,7 @@ object DetailsPage {
         state.details.map(_.engagements).map(chartFromTimeseries),
         state.details.map(_.mentions).map(chartFromTimeseries),
         state.details.map(_.sentiments).map(chartFromTimeseries),
-        state.details.map(_.price).map(chartFromTimeseries),
-        Chart(Chart.Props(defaultOpts)),
-        ctl.link(AppRouter.Index)("got to index")
+        state.details.map(_.price).map(chartFromTimeseries)
       )
     }
   }
