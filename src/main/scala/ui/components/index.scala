@@ -24,9 +24,11 @@ object IndexPage {
 
   case class State(loading: Boolean, trending: Seq[Trending])
 
-  def renderTrending(t: Trending) =
+  def renderTrending(ctl: RouterCtl[AppRouter.Page], t: Trending) =
     <.tr(
-      <.td(t.symbol),
+      <.td(
+        ctl.link(AppRouter.Details(t.symbol.toLowerCase, "1day"))(t.symbol)
+      ),
       <.td(t.desc),
       <.td(t.pos.toString),
       <.td(t.oldPos.toString),
@@ -34,14 +36,14 @@ object IndexPage {
     )
 
   val TrendingTable = ScalaComponent
-    .builder[Seq[Trending]]
-    .render_P(trending =>
+    .builder[(RouterCtl[AppRouter.Page], Seq[Trending])]
+    .render_P { case (ctl, trending) =>
       <.table(
         <.tbody(
-          trending.map(renderTrending(_)): _*
+          trending.map(renderTrending(ctl, _)): _*
         )
       )
-    )
+    }
     .build
 
   class Backend($ : BackendScope[Props, State]) {
@@ -76,8 +78,7 @@ object IndexPage {
 
       <.div(
         <.span("LOADING").when(state.loading),
-        ctl.link(AppRouter.Details("gme", "1day"))("got to details"),
-        TrendingTable(trending)
+        TrendingTable(ctl, trending)
       )
     }
   }
