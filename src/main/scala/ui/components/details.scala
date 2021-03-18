@@ -72,7 +72,7 @@ object DetailsPage {
         ),
         AxisOptions("value", js.Array()),
         List(
-          Series("line", ts.data)
+          Series("line", true, ts.data)
         )
       )
     }
@@ -92,8 +92,7 @@ object DetailsPage {
         state.details.map(formatPopularity),
         state.details.map(_.engagements).map(chartFromTimeseries),
         state.details.map(_.mentions).map(chartFromTimeseries),
-        state.details.map(_.sentiments).map(chartFromTimeseries),
-        state.details.map(_.price).map(chartFromTimeseries)
+        state.details.map(_.sentiments).map(chartFromTimeseries)
       )
     }
   }

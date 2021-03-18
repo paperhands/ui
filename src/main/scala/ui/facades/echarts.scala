@@ -64,17 +64,35 @@ object AxisOptions {
 
 @js.native
 trait Series extends js.Object {
+  val name: String
+  val stack: String
+  val smooth: Boolean
+  val showSymbol: Boolean
+  val lineStyle: LineStyle
+  val label: Label
   val `type`: String
   val data: js.Array[Int]
+}
+
+@js.native
+trait LineStyle extends js.Object {
+  var width: Int
+}
+
+@js.native
+trait Label extends js.Object {
+  var show: Boolean
+  var position: String
 }
 
 object Series {
   import js.JSConverters._
 
-  def apply(t: String, data: js.Array[Int]): Series =
+  def apply(t: String, smooth: Boolean, data: js.Array[Int]): Series =
     js.Dynamic
       .literal(
         "type" -> t,
+        "smooth" -> smooth,
         "data" -> data
       )
       .asInstanceOf[Series]
