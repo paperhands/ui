@@ -1,8 +1,4 @@
-ifdef GH_TOKEN
 PUBLIC_URL = https://$(GH_TOKEN)@github.com/paperhansd/ui.git
-else
-PUBLIC_URL = git@github.com:paperhands/ui.git
-endif
 
 public: setup-git
 	git clone -b generated $(PUBLIC_URL) public
