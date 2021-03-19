@@ -6,8 +6,7 @@ import diode.react.ReactConnector
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   def initialModel = AppModel(
     AppState(
-      items = List(),
-      isLoading = false
+      currentInternal = "1D"
     )
   )
 
@@ -18,12 +17,7 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
 
 class ExpenditurePageHandler[M](modelRW: ModelRW[M, AppState])
     extends ActionHandler(modelRW) {
-  override def handle = {
-    case AddItem(text) =>
-      updated(value.copy(items = value.items :+ text))
-    case StartLoading() =>
-      updated(value.copy(isLoading = true))
-    case StopLoading() =>
-      updated(value.copy(isLoading = false))
+  override def handle = { case SetInterval(interval) =>
+    updated(value.copy(currentInternal = interval))
   }
 }

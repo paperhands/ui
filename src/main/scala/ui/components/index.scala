@@ -118,6 +118,7 @@ object IndexPage {
 
       <.div(
         Loading.Modal().when(state.loading),
+        Tabs(Tabs.Props(props.proxy)),
         TrendingTable(ctl, trending)
       )
     }

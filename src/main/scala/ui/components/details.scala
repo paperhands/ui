@@ -123,6 +123,7 @@ object DetailsPage {
 
       <.div(
         Loading.Modal().when(state.loading),
+        Tabs(Tabs.Props(props.proxy)),
         <.div(
           ^.className := "block",
           <.button(
