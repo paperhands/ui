@@ -69,10 +69,11 @@ object DetailsPage {
       )
     }
 
-    def optsFromTimeseries(ts: Timeseries) = {
+    def optsFromTimeseries(ts: Timeseries): EChartOption[Series] = {
       val series = SeriesLine_()
         .setType("line")
         .setData(ts.data.map(_.toDouble))
+        .setSmooth(true)
       val xAxis = XAxis()
         .setType(Type.category)
         .setData(ts.titles)
@@ -87,8 +88,8 @@ object DetailsPage {
       opts
     }
 
-    def chartFromTimeseries(ts: Timeseries) =
-      Chart(Chart.Props(optsFromTimeseries(ts)))
+    def chrartFromOpts(opts: EChartOption[Series]) =
+      Chart(Chart.Props(opts))
 
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
@@ -100,9 +101,18 @@ object DetailsPage {
           s"Details for ${props.symbol} for ${props.interval}"
         ),
         state.details.map(formatPopularity),
-        state.details.map(_.engagements).map(chartFromTimeseries),
-        state.details.map(_.mentions).map(chartFromTimeseries),
-        state.details.map(_.sentiments).map(chartFromTimeseries)
+        state.details
+          .map(_.engagements)
+          .map(optsFromTimeseries)
+          .map(chrartFromOpts),
+        state.details
+          .map(_.mentions)
+          .map(optsFromTimeseries)
+          .map(chrartFromOpts),
+        state.details
+          .map(_.sentiments)
+          .map(optsFromTimeseries)
+          .map(chrartFromOpts)
       )
     }
   }
