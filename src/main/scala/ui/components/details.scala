@@ -63,14 +63,8 @@ object DetailsPage {
       <.div(
         ^.className := "block",
         <.div(
-          ^.className := "card",
-          <.div(
-            ^.className := "card-content",
-            <.div(
-              ^.className := "content",
-              s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
-            )
-          )
+          ^.className := "content",
+          s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
         )
       )
     }
@@ -109,8 +103,15 @@ object DetailsPage {
       val ctl = props.ctl
 
       <.div(
-        ctl.link(AppRouter.Index)("got to index"),
         Loading.Modal().when(state.loading),
+        <.div(
+          ^.className := "block",
+          ctl
+            .link(AppRouter.Index)(
+              "⬅️ Back",
+              ^.className := "button is-info"
+            )
+        ),
         state.details
           .map(formatPopularity),
         state.details
