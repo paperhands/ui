@@ -8,6 +8,19 @@ import org.scalajs.dom
 @js.native
 object echarts extends js.Object {
   def init(e: dom.Element): EChart = js.native
+  val graphic: graphicModule = js.native
+}
+
+@js.native
+trait graphicModule extends js.Object {
+  def LinearGradient(
+      x: Int,
+      y: Int,
+      x2: Int,
+      y2: Int,
+      colorStops: js.Array[js.Object],
+      globalCoord: Boolean
+  ): js.Object = js.native
 }
 
 @js.native

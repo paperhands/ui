@@ -4,9 +4,34 @@ import app.paperhands.model._
 
 import scala.scalajs.js
 import scala.scalajs.js.`|`
+import app.paperhands.echarts._
 
 object ChartOpts {
+  import js.JSConverters._
+
   val obj = js.Dynamic.literal
+
+  def gradColor(off: Int, color: String) =
+    obj(
+      "offset" -> off,
+      "color" -> color
+    )
+
+  def gradColors(pairs: (Int, String)*) =
+    pairs.map { case (o, c) => gradColor(o, c) }.toJSArray
+
+  def gradient =
+    echarts.graphic.LinearGradient(
+      0,
+      0,
+      0,
+      1,
+      js.Array(
+        gradColor(0, "rgba(255, 0, 135)"),
+        gradColor(1, "rgba(135, 0, 157)")
+      ),
+      false
+    )
 
   def series(data: js.Array[Int]) =
     obj(
@@ -22,7 +47,7 @@ object ChartOpts {
       ),
       "areaStyle" -> obj(
         "opacity" -> 0.8,
-        "color" -> "rgba(128, 255, 165)"
+        "color" -> gradient
       ),
       "showSymbol" -> false,
       "emphasis" -> obj(
@@ -48,8 +73,7 @@ object ChartOpts {
 
   def optsFromTimeseries(
       legendLabel: String
-  )(ts: Timeseries): js.Object = {
-
+  )(ts: Timeseries): js.Object =
     obj(
       "xAxis" -> xAxis(ts),
       "yAxis" -> yAxis,
@@ -77,6 +101,5 @@ object ChartOpts {
         "text" -> legendLabel
       )
     )
-  }
 
 }
