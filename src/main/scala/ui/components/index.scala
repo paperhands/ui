@@ -37,6 +37,7 @@ object IndexPage {
     .builder[(RouterCtl[AppRouter.Page], Seq[Trending])]
     .render_P { case (ctl, trending) =>
       <.table(
+        ^.className := "table",
         <.tbody(
           trending.map(renderTrending(ctl, _)): _*
         )
