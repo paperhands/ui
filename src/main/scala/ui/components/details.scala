@@ -60,13 +60,23 @@ object DetailsPage {
       val engagements = details.popularity.engagements
       val mentions = details.popularity.mentions
 
-      <.span(
-        s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
+      <.div(
+        ^.className := "block",
+        <.div(
+          ^.className := "card",
+          <.div(
+            ^.className := "card-content",
+            <.div(
+              ^.className := "content",
+              s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
+            )
+          )
+        )
       )
     }
 
     def chrartFromOpts(opts: js.Object) =
-      Chart(Chart.Props(opts))
+      <.div(^.className := "block", Chart(Chart.Props(opts)))
 
     def engagementAndMentionChart(data: Details): VdomElement = {
       val series =
@@ -100,10 +110,7 @@ object DetailsPage {
 
       <.div(
         ctl.link(AppRouter.Index)("got to index"),
-        <.span("LOADING").when(state.loading),
-        <.h1(
-          s"Details for ${props.symbol} for ${props.interval}"
-        ),
+        Loading.Modal().when(state.loading),
         state.details
           .map(formatPopularity),
         state.details

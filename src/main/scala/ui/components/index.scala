@@ -76,7 +76,7 @@ object IndexPage {
       val trending = state.trending
 
       <.div(
-        <.span("LOADING").when(state.loading),
+        Loading.Modal().when(state.loading),
         TrendingTable(ctl, trending)
       )
     }
