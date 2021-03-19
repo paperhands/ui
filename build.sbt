@@ -16,23 +16,16 @@ ThisBuild / version          := "0.1.0"
 ThisBuild / organization     := "app.paperhands"
 ThisBuild / organizationName := "paperhands"
 
+resolvers += Resolver.bintrayRepo("oyvindberg", "ScalablyTyped")
+
 lazy val root = (project in file("."))
-  .enablePlugins(ScalaJSBundlerPlugin, ScalablyTypedConverterPlugin)
+  .enablePlugins(ScalaJSBundlerPlugin)
   .settings(
     name := "paperhands-ui",
 
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     libraryDependencies ++= Seq(
-      /* "io.circe"  %% "circe-core"     % circeVersion, */
-      /* "io.circe"  %% "circe-generic"  % circeVersion, */
-      /* "io.circe"  %% "circe-parser"   % circeVersion, */
-      /* "io.circe"  %% "circe-literal"  % circeVersion, */
-      /* "io.circe"  %% "circe-jawn"     % circeVersion, */
-
-      /* "com.softwaremill.sttp.client3" %%% "core" % sttpVersion, */
-      /* "com.softwaremill.sttp.client3" %%% "cats" % sttpVersion, */
-
       "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
 
       "org.typelevel" %% "cats-core" % catsVersion,
@@ -43,8 +36,6 @@ lazy val root = (project in file("."))
 
       "com.github.japgolly.scalajs-react" %%% "core" % scalaReactVersion,
       "com.github.japgolly.scalajs-react" %%% "extra" % scalaReactVersion,
-      "com.github.japgolly.scalajs-react" %%% "ext-cats" % scalaReactVersion,
-      "com.github.japgolly.scalajs-react" %%% "ext-monocle-cats" % scalaReactVersion,
 
        "io.monix" %% "minitest" % minitestVersion % "test",
        "io.monix" %% "minitest-laws" % minitestVersion % "test",
@@ -52,17 +43,16 @@ lazy val root = (project in file("."))
 
        "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
        "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3
+
+       "org.scalablytyped" %%% "echarts" % "4.6.1-dt-20200625Z-466461",
     ),
 
     useYarn := true,
-    stFlavour := Flavour.Japgolly,
-    stIgnore := List("react", "react-dom"),
 
     npmDependencies in Compile ++= Seq(
       "react"          -> reactVersion,
       "react-dom"      -> reactVersion,
       "echarts"        -> echartsVersion,
-      "@types/echarts" -> "4.9.6",
     ),
 
     scalaJSUseMainModuleInitializer := true,
