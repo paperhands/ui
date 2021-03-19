@@ -73,8 +73,8 @@ object ChartOpts {
     )
 
   def engagementMentionsSeries(
-      mentions: Timeseries,
-      engagements: Timeseries
+      engagements: Timeseries,
+      mentions: Timeseries
   ): js.Array[js.Object] =
     js.Array(
       series(
