@@ -70,10 +70,15 @@ object DetailsPage {
 
     def engagementAndMentionChart(data: Details): VdomElement = {
       val series =
-        ChartOpts.mentionEngagementSeries(data.mentions, data.engagements)
+        ChartOpts.engagementMentionsSeries(data.engagements, data.mentions)
 
       val opts = ChartOpts
-        .optsFromTimeseriesAndSeries("Engagement", data.mentions, series)
+        .optsFromTimeseriesAndSeries(
+          "Engagement & Mentions",
+          js.Array("Engagement", "Mentions"),
+          data.mentions,
+          series
+        )
       chrartFromOpts(opts)
     }
 
@@ -82,6 +87,7 @@ object DetailsPage {
 
       val opts = ChartOpts.optsFromTimeseriesAndSeries(
         "Sentiment",
+        js.Array("Sentiment"),
         ts,
         ChartOpts.sentimentSeries(ts)
       )

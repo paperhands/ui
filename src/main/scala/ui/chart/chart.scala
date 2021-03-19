@@ -21,7 +21,7 @@ object ChartOpts {
     pairs.map { case (o, c) => gradColor(o, c) }.toJSArray
 
   def gradient(c1: String, c2: String) =
-    echarts.graphic.LinearGradient(
+    new echarts.graphic.LinearGradient(
       0,
       0,
       0,
@@ -33,9 +33,10 @@ object ChartOpts {
       false
     )
 
-  def series(data: js.Array[Int], c1: String, c2: String) =
+  def series(data: js.Array[Int], name: String, c1: String, c2: String) =
     obj(
       "type" -> "line",
+      "name" -> name,
       "data" -> data,
       "smooth" -> true,
       "lineStyle" -> obj(
@@ -71,20 +72,31 @@ object ChartOpts {
       "data" -> ts.titles
     )
 
-  def mentionEngagementSeries(
+  def engagementMentionsSeries(
       mentions: Timeseries,
       engagements: Timeseries
   ): js.Array[js.Object] =
     js.Array(
-      series(mentions.data, "rgba(128, 255, 165)", "rgba(1, 191, 236)"),
-      series(engagements.data, "rgba(0, 221, 255)", "rgba(77, 119, 255)")
+      series(
+        engagements.data,
+        "Engagement",
+        "rgba(0, 221, 255)",
+        "rgba(77, 119, 255)"
+      ),
+      series(
+        mentions.data,
+        "Mentions",
+        "rgba(128, 255, 165)",
+        "rgba(1, 191, 236)"
+      )
     )
 
   def sentimentSeries(ts: Timeseries): js.Array[js.Object] =
-    js.Array(series(ts.data, "green", "red"))
+    js.Array(series(ts.data, "Sentiment", "green", "red"))
 
   def optsFromTimeseriesAndSeries(
-      legendLabel: String,
+      title: String,
+      legend: js.Array[String],
       ts: Timeseries,
       series: js.Array[js.Object]
   ): js.Object =
@@ -100,7 +112,7 @@ object ChartOpts {
         "bottom" -> "3%"
       ),
       "legend" -> obj(
-        "data" -> js.Array(legendLabel)
+        "data" -> legend
       ),
       "tooltip" -> obj(
         "trigger" -> "axis",
@@ -112,7 +124,7 @@ object ChartOpts {
         )
       ),
       "title" -> obj(
-        "text" -> legendLabel
+        "text" -> title
       )
     )
 

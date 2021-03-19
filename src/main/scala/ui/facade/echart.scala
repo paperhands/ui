@@ -13,14 +13,15 @@ object echarts extends js.Object {
 
 @js.native
 trait graphicModule extends js.Object {
-  def LinearGradient(
+  @js.native
+  class LinearGradient(
       x: Int,
       y: Int,
       x2: Int,
       y2: Int,
       colorStops: js.Array[js.Object],
       globalCoord: Boolean
-  ): js.Object = js.native
+  ) extends js.Object
 }
 
 @js.native
