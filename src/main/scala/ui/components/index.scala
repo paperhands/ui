@@ -23,7 +23,7 @@ object IndexPage {
   case class State(loading: Boolean, trending: Seq[Trending])
 
   def formatPositionMove(t: Trending) = {
-    val m = t.pos - t.oldPos
+    val m = t.oldPos - t.pos
     val icon = if (m < 0) "fa-arrow-down" else "fa-arrow-up"
     val color = if (m < 0) "has-text-danger-dark" else "has-text-success-dark"
 
@@ -53,7 +53,7 @@ object IndexPage {
       ),
       <.td(
         ^.className := "has-text-weight-bold",
-        t.symbol
+        s"$$${t.symbol}"
       ),
       <.td(t.desc),
       formatPositionMove(t),
