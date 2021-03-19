@@ -17,9 +17,6 @@ import app.paperhands.chart._
 import scala.scalajs.js
 import scala.scalajs.js.`|`
 
-import typings.echarts.echarts._
-import typings.echarts.echarts.EChartOption._
-
 object DetailsPage {
   case class Props(
       proxy: ModelProxy[AppState],
@@ -68,7 +65,7 @@ object DetailsPage {
       )
     }
 
-    def chrartFromOpts(opts: EChartOption[Series]) =
+    def chrartFromOpts(opts: js.Object) =
       Chart(Chart.Props(opts))
 
     def render(props: Props, state: State): VdomElement = {

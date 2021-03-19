@@ -5,84 +5,78 @@ import app.paperhands.model._
 import scala.scalajs.js
 import scala.scalajs.js.`|`
 
-import typings.zrender.zrender.LinearGradient // not used for now, area style only expects string as color atm
-import typings.echarts.echarts._
-import typings.echarts.echarts.EChartOption._
-import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.DataObject
-import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.Type
-import typings.echarts.anon
-import typings.echarts.anon.ShadowBlur
-import typings.echarts.anon.BorderRadius
-import typings.echarts.anon.ColorOpacity
-import typings.echarts.mod.graphic
-import typings.echarts.echartsStrings
-import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.PointerLabel
-
 object ChartOpts {
-  def optsFromTimeseries(
-      legendLabel: String
-  )(ts: Timeseries): EChartOption[Series] = {
-    val as = ColorOpacity().setOpacity(0.8).setColor("rgba(128, 255, 165)")
+  val obj = js.Dynamic.literal
 
-    val sb = ShadowBlur().setWidth(0)
-    val label = BorderRadius().setShow(false).setPosition("top")
-    val series = SeriesLine_()
-      .setType("line")
-      .setData(ts.data.map(_.toDouble))
-      .setSmooth(true)
-      .setLineStyle(sb)
-      .setLabel(label)
-      .setAreaStyle(as)
-      .setShowSymbol(false)
-      .setEmphasis(
-        js.Dynamic.literal("focus" -> "series").asInstanceOf[anon.`8`]
-      )
-
-    val xAxis = XAxis()
-      .setType(Type.category)
-      .setData(ts.titles)
-    val yAxis = YAxis()
-      .setType(Type.value)
-      .setData(js.Array())
-
-    val tb = js.Dynamic.literal(
-      "feature" -> js.Dynamic.literal(
-        "saveAsImage" -> js.Object()
+  def series(data: js.Array[Int]) =
+    obj(
+      "type" -> "line",
+      "data" -> data,
+      "smooth" -> true,
+      "lineStyle" -> obj(
+        "width" -> 0
+      ),
+      "label" -> obj(
+        "show" -> true,
+        "position" -> "top"
+      ),
+      "areaStyle" -> obj(
+        "opacity" -> 0.8,
+        "color" -> "rgba(128, 255, 165)"
+      ),
+      "showSymbol" -> false,
+      "emphasis" -> obj(
+        "focus" -> "series"
       )
     )
 
-    val grid = Grid()
-      .setContainLabel(true)
-      .setLeft("3%")
-      .setRight("4%")
-      .setBottom("3%")
+  val toolbox = obj(
+    "feature" -> js.Dynamic.literal(
+      "saveAsImage" -> js.Object()
+    )
+  )
+  val yAxis = obj(
+    "type" -> "value",
+    "data" -> js.Array()
+  )
 
-    val legend = Legend_()
-      .setData(js.Array(legendLabel))
+  def xAxis(ts: Timeseries) =
+    obj(
+      "type" -> "category",
+      "data" -> ts.titles
+    )
 
-    val pl = PointerLabel().setBackgroundColor("#6a7985")
-    val ap = Tooltip
-      .AxisPointer()
-      .setType(echartsStrings.line)
-      .setLabel(pl)
-    val tooltip = Tooltip_()
-      .setTrigger(echartsStrings.axis)
-      .setAxisPointer(ap)
+  def optsFromTimeseries(
+      legendLabel: String
+  )(ts: Timeseries): js.Object = {
 
-    val title = EChartTitleOption()
-      .setText(legendLabel)
-
-    val opts = EChartOption_[Series]()
-      .setXAxis(xAxis)
-      .setYAxis(yAxis)
-      .setSeries(js.Array(series))
-      .setToolbox(tb)
-      .setGrid(grid)
-      .setLegend(legend)
-      .setTooltip(tooltip)
-      .setTitle(title)
-
-    opts
+    obj(
+      "xAxis" -> xAxis(ts),
+      "yAxis" -> yAxis,
+      "series" -> js.Array(series(ts.data)),
+      "toolbox" -> toolbox,
+      "grid" -> obj(
+        "containLabel" -> true,
+        "left" -> "3%",
+        "right" -> "4%",
+        "bottom" -> "3%"
+      ),
+      "legend" -> obj(
+        "data" -> js.Array(legendLabel)
+      ),
+      "tooltip" -> obj(
+        "trigger" -> "axis",
+        "axisPointer" -> obj(
+          "type" -> "line",
+          "label" -> obj(
+            "backgronudColor" -> "#6a7985"
+          )
+        )
+      ),
+      "title" -> obj(
+        "text" -> legendLabel
+      )
+    )
   }
 
 }

@@ -43,8 +43,6 @@ lazy val root = (project in file("."))
 
        "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
        "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3
-
-       "org.scalablytyped" %%% "echarts" % "4.6.1-dt-20200625Z-466461",
     ),
 
     useYarn := true,

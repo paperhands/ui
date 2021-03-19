@@ -10,34 +10,31 @@ import japgolly.scalajs.react.vdom.html_<^._
 
 import app.paperhands.router.AppRouter
 import app.paperhands.diode._
+import app.paperhands.echarts._
 
 import scala.scalajs.js
 
-import typings.echarts.echartsRequire
-import typings.echarts.mod.init
-import typings.echarts.echarts._
-import typings.echarts.echarts.EChartOption._
 import typings.std.HTMLDivElement
 
 object Chart {
   case class Props(
-      opts: EChartOption[Series]
+      opts: js.Object
   )
 
   object Props {
     def fromTimeSeries() = {}
   }
 
-  case class State(echart: Option[ECharts])
+  case class State(echart: Option[EChart])
 
   class Backend($ : BackendScope[Props, State]) {
-    def setChart(c: ECharts): Callback =
+    def setChart(c: EChart): Callback =
       $.modState(_.copy(echart = Some(c)))
 
     def initChart(p: Props): Callback =
       $.getDOMNode.map { dom =>
-        val el = dom.toElement.get.asInstanceOf[HTMLDivElement]
-        val chart = init(el)
+        val el = dom.toElement.get.asInstanceOf[HTMLElement]
+        val chart = echarts.init(el)
         chart.setOption(p.opts)
         chart
       } >>= setChart
