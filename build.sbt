@@ -17,7 +17,7 @@ ThisBuild / organization     := "app.paperhands"
 ThisBuild / organizationName := "paperhands"
 
 lazy val root = (project in file("."))
-  .enablePlugins(ScalaJSBundlerPlugin)
+  .enablePlugins(ScalaJSBundlerPlugin, ScalablyTypedConverterPlugin)
   .settings(
     name := "paperhands-ui",
 
@@ -54,10 +54,15 @@ lazy val root = (project in file("."))
        "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3
     ),
 
+    useYarn := true,
+    stFlavour := Flavour.Japgolly,
+    stIgnore := List("react", "react-dom"),
+
     npmDependencies in Compile ++= Seq(
-      "react"     -> reactVersion,
-      "react-dom" -> reactVersion,
-      "echarts"   -> echartsVersion,
+      "react"          -> reactVersion,
+      "react-dom"      -> reactVersion,
+      "echarts"        -> echartsVersion,
+      "@types/echarts" -> "4.9.6",
     ),
 
     scalaJSUseMainModuleInitializer := true,
