@@ -1,7 +1,10 @@
 package app.paperhands.model
 
 import scala.scalajs.js
+import scala.scalajs.js.`|`
 import scala.scalajs.js.annotation.JSName
+
+import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.DataObject
 
 trait Popularity extends js.Object {
   val symbol: String
@@ -11,7 +14,7 @@ trait Popularity extends js.Object {
 
 trait Timeseries extends js.Object {
   val data: js.Array[Int]
-  val titles: js.Array[String]
+  val titles: js.Array[String | Double | DataObject]
 }
 
 trait Details extends js.Object {

@@ -10,11 +10,16 @@ import japgolly.scalajs.react.vdom.html_<^._
 
 import app.paperhands.router.AppRouter
 import app.paperhands.diode._
-import app.paperhands.echarts._
 import app.paperhands.model._
 import app.paperhands.net._
 
 import scala.scalajs.js
+import scala.scalajs.js.`|`
+
+import typings.echarts.echarts._
+import typings.echarts.echarts.EChartOption._
+import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.DataObject
+import typings.echarts.echarts.EChartOption.BasicComponents.CartesianAxis.Type
 
 object DetailsPage {
   case class Props(
@@ -65,16 +70,21 @@ object DetailsPage {
     }
 
     def optsFromTimeseries(ts: Timeseries) = {
-      ChartOptions(
-        AxisOptions(
-          "category",
-          ts.titles
-        ),
-        AxisOptions("value", js.Array()),
-        List(
-          Series("line", true, ts.data)
-        )
-      )
+      val series = SeriesLine_()
+        .setType("line")
+        .setData(ts.data.map(_.toDouble))
+      val xAxis = XAxis()
+        .setType(Type.category)
+        .setData(ts.titles)
+      val yAxis = YAxis()
+        .setType(Type.value)
+        .setData(js.Array())
+      val opts = EChartOption_[Series]()
+        .setXAxis(xAxis)
+        .setYAxis(yAxis)
+        .setSeries(js.Array(series))
+
+      opts
     }
 
     def chartFromTimeseries(ts: Timeseries) =
