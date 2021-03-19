@@ -6,5 +6,6 @@ in pkgs.stdenv.mkDerivation rec {
     nodePackages.live-server
     nodePackages.yarn
   ];
-   LD_LIBRARY_PATH = "${pkgs.stdenv.lib.makeLibraryPath buildInputs}";
+  SBT_OPTS = "-XX:+UseG1GC";
+  LD_LIBRARY_PATH = "${pkgs.stdenv.lib.makeLibraryPath buildInputs}";
 }
