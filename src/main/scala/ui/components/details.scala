@@ -80,7 +80,7 @@ object DetailsPage {
         .optsFromTimeseriesAndSeries(
           "Engagement & Mentions",
           js.Array("Engagement", "Mentions"),
-          data.mentions,
+          data.engagements,
           series
         )
       chrartFromOpts(opts)
@@ -106,11 +106,12 @@ object DetailsPage {
         Loading.Modal().when(state.loading),
         <.div(
           ^.className := "block",
-          ctl
-            .link(AppRouter.Index)(
-              "⬅️ Back",
-              ^.className := "button is-info"
-            )
+          <.button(
+            ^.onClick --> ctl.set(AppRouter.Index),
+            ^.className := "button is-info",
+            <.i(^.className := s"fas fa-arrow-left"),
+            " Back"
+          )
         ),
         state.details
           .map(formatPopularity),

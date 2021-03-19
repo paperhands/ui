@@ -93,7 +93,7 @@ object ChartOpts {
 
   def sentimentSeries(ts: Timeseries): js.Array[js.Object] =
     js.Array(
-      series(ts.data, "Sentiment", "rgba(128, 255, 165)", "rgba(224, 62, 76)")
+      series(ts.data, "Sentiment", "rgba(128, 255, 165)", "green")
     )
 
   def optsFromTimeseriesAndSeries(
