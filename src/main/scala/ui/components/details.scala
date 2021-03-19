@@ -60,11 +60,30 @@ object DetailsPage {
       val engagements = details.popularity.engagements
       val mentions = details.popularity.mentions
 
-      <.div(
-        ^.className := "block",
+      <.section(
+        ^.className := "hero is-link mb-6",
         <.div(
-          ^.className := "content",
-          s"$symbol was mentioned $mentions and had $engagements comments in conversation around it"
+          ^.className := "hero-body",
+          <.p(
+            ^.className := "title",
+            s"$$$symbol"
+          ),
+          <.p(
+            ^.className := "subtitle",
+            <.p(
+              "Some numbers:"
+            ),
+            <.p(
+              ^.className := "ml-3",
+              <.span(^.className := "has-text-weight-bold", mentions),
+              " times mentioned directly"
+            ),
+            <.p(
+              ^.className := "ml-3",
+              <.span(^.className := "has-text-weight-bold", engagements),
+              " comments involving this symbol"
+            )
+          )
         )
       )
     }
@@ -109,8 +128,7 @@ object DetailsPage {
           <.button(
             ^.onClick --> ctl.set(AppRouter.Index),
             ^.className := "button is-info",
-            <.i(^.className := s"fas fa-arrow-left"),
-            " Back"
+            <.i(^.className := s"fas fa-arrow-left")
           )
         ),
         state.details
