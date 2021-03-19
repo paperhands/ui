@@ -80,7 +80,7 @@ object DetailsPage {
     def optsFromTimeseries(
         legendLabel: String
     )(ts: Timeseries): EChartOption[Series] = {
-      val as = ColorOpacity().setOpacity(0.2).setColor("rgba(128, 255, 165)")
+      val as = ColorOpacity().setOpacity(0.8).setColor("rgba(128, 255, 165)")
 
       val sb = ShadowBlur().setWidth(0)
       val label = BorderRadius().setShow(false).setPosition("top")
