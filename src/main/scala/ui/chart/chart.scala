@@ -69,7 +69,7 @@ object ChartOpts {
         "axisPointer" -> obj(
           "type" -> "line",
           "label" -> obj(
-            "backgronudColor" -> "#6a7985"
+            "backgroundColor" -> "#6a7985"
           )
         )
       ),
