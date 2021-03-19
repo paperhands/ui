@@ -68,6 +68,27 @@ object DetailsPage {
     def chrartFromOpts(opts: js.Object) =
       Chart(Chart.Props(opts))
 
+    def engagementAndMentionChart(data: Details): VdomElement = {
+      val series =
+        ChartOpts.mentionEngagementSeries(data.mentions, data.engagements)
+
+      val opts = ChartOpts
+        .optsFromTimeseriesAndSeries("Engagement", data.mentions, series)
+      chrartFromOpts(opts)
+    }
+
+    def sentimentChart(data: Details): VdomElement = {
+      val ts = data.sentiments
+
+      val opts = ChartOpts.optsFromTimeseriesAndSeries(
+        "Sentiment",
+        ts,
+        ChartOpts.sentimentSeries(ts)
+      )
+
+      chrartFromOpts(opts)
+    }
+
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
 
@@ -77,19 +98,12 @@ object DetailsPage {
         <.h1(
           s"Details for ${props.symbol} for ${props.interval}"
         ),
-        state.details.map(formatPopularity),
         state.details
-          .map(_.engagements)
-          .map(ChartOpts.optsFromTimeseries("Engagement"))
-          .map(chrartFromOpts),
+          .map(formatPopularity),
         state.details
-          .map(_.mentions)
-          .map(ChartOpts.optsFromTimeseries("Mentions"))
-          .map(chrartFromOpts),
+          .map(engagementAndMentionChart),
         state.details
-          .map(_.sentiments)
-          .map(ChartOpts.optsFromTimeseries("Sentiment"))
-          .map(chrartFromOpts)
+          .map(sentimentChart)
       )
     }
   }
