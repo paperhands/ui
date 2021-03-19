@@ -22,24 +22,65 @@ object IndexPage {
 
   case class State(loading: Boolean, trending: Seq[Trending])
 
+  def formatPositionMove(t: Trending) = {
+    val m = t.pos - t.oldPos
+    val icon = if (m < 0) "fa-arrow-down" else "fa-arrow-up"
+    val color = if (m < 0) "has-text-danger-dark" else "has-text-success-dark"
+
+    <.td(
+      ^.className := color,
+      s"$m ",
+      <.i(^.className := s"fas $icon")
+    )
+  }
+
+  def formatPerc(t: Trending) = {
+    val perc = t.changePerc
+    val color =
+      if (perc < 0) "has-text-danger-dark" else "has-text-success-dark"
+
+    <.td(
+      ^.className := color,
+      s"$perc%"
+    )
+  }
+
   def renderTrending(ctl: RouterCtl[AppRouter.Page], t: Trending) =
     <.tr(
+      ^.className := "is-clickable",
+      ^.onClick --> ctl.set(
+        AppRouter.Details(t.symbol.toLowerCase, "1day")
+      ),
       <.td(
-        ctl.link(AppRouter.Details(t.symbol.toLowerCase, "1day"))(t.symbol)
+        ^.className := "has-text-weight-bold",
+        t.symbol
       ),
       <.td(t.desc),
-      <.td(t.pos.toString),
-      <.td(t.oldPos.toString),
-      <.td(t.changePerc.toString)
+      formatPositionMove(t),
+      formatPerc(t)
+    )
+
+  val thead =
+    <.thead(
+      <.tr(
+        <.th("Stonk"),
+        <.th("Description"),
+        <.th("Popularity move"),
+        <.th("Popularity change")
+      )
     )
 
   val TrendingTable = ScalaComponent
     .builder[(RouterCtl[AppRouter.Page], Seq[Trending])]
     .render_P { case (ctl, trending) =>
-      <.table(
-        ^.className := "table",
-        <.tbody(
-          trending.map(renderTrending(ctl, _)): _*
+      <.div(
+        ^.className := "content",
+        <.table(
+          ^.className := "table is-hoverable",
+          thead,
+          <.tbody(
+            trending.map(renderTrending(ctl, _)): _*
+          )
         )
       )
     }
