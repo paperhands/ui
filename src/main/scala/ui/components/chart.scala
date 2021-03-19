@@ -14,8 +14,6 @@ import app.paperhands.echarts._
 
 import scala.scalajs.js
 
-import typings.std.HTMLDivElement
-
 object Chart {
   case class Props(
       opts: js.Object
