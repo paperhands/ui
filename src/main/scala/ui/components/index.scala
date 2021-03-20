@@ -45,6 +45,8 @@ object IndexPage {
     )
   }
 
+  val hideMobile = ^.className := "is-hidden-mobile"
+
   def renderTrending(ctl: RouterCtl[AppRouter.Page], t: Trending) =
     <.tr(
       ^.className := "is-clickable",
@@ -55,7 +57,7 @@ object IndexPage {
         ^.className := "has-text-weight-bold",
         s"$$${t.symbol}"
       ),
-      <.td(t.desc),
+      <.td(hideMobile, t.desc),
       formatPositionMove(t),
       formatPerc(t)
     )
@@ -64,7 +66,7 @@ object IndexPage {
     <.thead(
       <.tr(
         <.th("Stonk"),
-        <.th("Description"),
+        <.th(hideMobile, "Description"),
         <.th("Popularity move"),
         <.th("Popularity change")
       )
