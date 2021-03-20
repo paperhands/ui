@@ -8,6 +8,7 @@ import org.scalajs.dom
 @js.native
 object echarts extends js.Object {
   def init(e: dom.Element): EChart = js.native
+  def getInstanceByDom(e: dom.Element): EChart = js.native
   val graphic: graphicModule = js.native
 }
 

@@ -23,30 +23,27 @@ object Chart {
     def fromTimeSeries() = {}
   }
 
-  case class State(echart: Option[EChart])
+  case class State()
 
   class Backend($ : BackendScope[Props, State]) {
-    def setChart(c: EChart): Callback =
-      $.modState(_.copy(echart = Some(c)))
-
     def initChart(p: Props): Callback =
       $.getDOMNode.map { dom =>
         val el = dom.toElement.get.asInstanceOf[HTMLElement]
         val chart = echarts.init(el)
         chart.setOption(p.opts)
         chart
-      } >>= setChart
+      } >> Callback.log("initialized chart")
 
     def mounted: Callback =
-      Callback.log("Mounted chart") >>
-        ($.props >>= initChart)
+      ($.props >>= initChart)
 
     def update(np: Props): Callback = {
       Callback.log("Got new props") >>
-        $.state.map { state =>
-          println(s"checking state $state")
-          state.echart.foreach(_.setOption(np.opts))
-        }
+        $.getDOMNode.map { dom =>
+          val el = dom.toElement.get.asInstanceOf[HTMLElement]
+          val chart = echarts.getInstanceByDom(el)
+          chart.setOption(np.opts)
+        } >> Callback.log("updated chart")
     }
 
     def render(props: Props, state: State): VdomElement = {
@@ -58,7 +55,7 @@ object Chart {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(None))
+    .initialState(State())
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .componentWillReceiveProps(scope => scope.backend.update(scope.nextProps))
