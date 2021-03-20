@@ -47,9 +47,10 @@ lazy val root = (project in file("."))
     useYarn := true,
 
     npmDependencies in Compile ++= Seq(
-      "react"          -> reactVersion,
-      "react-dom"      -> reactVersion,
-      "echarts"        -> echartsVersion,
+      "react"      -> reactVersion,
+      "react-dom"  -> reactVersion,
+      "echarts"    -> echartsVersion,
+      "dateformat" -> "4.5.1",
     ),
 
     scalaJSUseMainModuleInitializer := true,

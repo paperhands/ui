@@ -2,6 +2,8 @@ package app.paperhands.model
 
 import scala.scalajs.js.{Date, JSON}
 
+import app.paperhands.dateformat.dateFormat
+
 object Model {
   def as[A](body: String): A =
     JSON.parse(body).asInstanceOf[A]
@@ -13,10 +15,18 @@ object Parse {
 }
 
 object Format {
-  // TODO this is also ugly, think about a better way
-  def formatDateFor(d: Date, period: String): String =
-    period match {
-      // TODO add more formatters based on period string
-      case _ => s"${d.getHours}:${d.getMinutes}"
+  def formatDateFor(d: Date, period: String): String = {
+    // dddd, mmmm dS, yyyy, hh:MM:ss TT
+    val f = period match {
+      case "1D" => "HH:MM"
+      case "5D" => "ddd"
+      case "1W" => "ddd"
+      case "1M" => "mmm. d"
+      case "6M" => "mmm. d, yy"
+      case "1Y" => "mmm.d, yy"
+      case _    => "dddd, mmmm dS, yyyy, HH:MM:ss"
     }
+
+    dateFormat(d, f)
+  }
 }
