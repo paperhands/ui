@@ -33,8 +33,8 @@ object DetailsPage {
     def formatTimeseries(ts: Timeseries, period: String): Timeseries =
       js.Dynamic
         .literal(
-          "titles" -> ts.titles.map(formatDatetimeString(_, period)),
-          "data" -> ts.data
+          titles = ts.titles.map(formatDatetimeString(_, period)),
+          data = ts.data
         )
         .asInstanceOf[Timeseries]
 
@@ -42,11 +42,11 @@ object DetailsPage {
     def formatDetails(details: Details, period: String): Details =
       js.Dynamic
         .literal(
-          "mentions" -> formatTimeseries(details.mentions, period),
-          "engagements" -> formatTimeseries(details.engagements, period),
-          "sentiments" -> formatTimeseries(details.sentiments, period),
-          "price" -> formatTimeseries(details.price, period),
-          "popularity" -> details.popularity
+          mentions = formatTimeseries(details.mentions, period),
+          engagements = formatTimeseries(details.engagements, period),
+          sentiments = formatTimeseries(details.sentiments, period),
+          price = formatTimeseries(details.price, period),
+          popularity = details.popularity
         )
         .asInstanceOf[Details]
 

@@ -16,6 +16,7 @@ object Format {
   // TODO this is also ugly, think about a better way
   def formatDateFor(d: Date, period: String): String =
     period match {
+      // TODO add more formatters based on period string
       case _ => s"${d.getHours}:${d.getMinutes}"
     }
 }
