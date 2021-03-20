@@ -10,8 +10,8 @@ object Net {
   private def get(p: String) =
     Ajax("GET", pref(p)).setRequestContentTypeJsonUtf8
 
-  def getTrending =
-    get("api/v1/quote/trending").send("")
+  def getTrending(period: String) =
+    get(s"api/v1/quote/trending/$period").send("")
 
   def getDetails(symbol: String, period: String) =
     get(s"api/v1/quote/details/$symbol/$period").send("")

@@ -93,9 +93,17 @@ object IndexPage {
     }
 
     def loadTrending: Callback =
-      Net.getTrending.onComplete { xhr =>
-        stopLoading >> Callback.log(xhr) >> setTrending(xhr.responseText)
-      }.asCallback
+      $.props >>= { props =>
+        val proxy = props.proxy()
+        val period = proxy.currentPeriod
+
+        Net
+          .getTrending(period)
+          .onComplete { xhr =>
+            stopLoading >> setTrending(xhr.responseText)
+          }
+          .asCallback
+      }
 
     def setLoading(v: Boolean) =
       $.modState(_.copy(loading = v))
@@ -107,8 +115,11 @@ object IndexPage {
       setLoading(false)
 
     def mounted: Callback =
-      Callback.log("Mounted index") >>
-        startLoading >>
+      startLoading >>
+        loadTrending
+
+    def willReceiveProps: Callback =
+      startLoading >>
         loadTrending
 
     def render(props: Props, state: State): VdomElement = {
@@ -129,6 +140,7 @@ object IndexPage {
     .initialState(State(false, List()))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
+    .componentWillReceiveProps(_.backend.willReceiveProps)
     .build
 
   def apply(props: Props) = Component(props)

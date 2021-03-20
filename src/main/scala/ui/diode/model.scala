@@ -3,7 +3,7 @@ package app.paperhands.diode
 import diode.Action
 
 case class AppState(
-    currentInternal: String
+    currentPeriod: String
 )
 
 case class AppModel(

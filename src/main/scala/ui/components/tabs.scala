@@ -24,7 +24,7 @@ object Tabs {
   class Backend($ : BackendScope[Props, State]) {
     def render(props: Props, state: State): VdomElement = {
       val proxy = props.proxy()
-      val current = proxy.currentInternal
+      val current = proxy.currentPeriod
       val ranges = List("1D", "5D", "1W", "1M", "6M", "1Y")
 
       <.div(

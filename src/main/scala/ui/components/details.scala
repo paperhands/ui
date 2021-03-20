@@ -34,12 +34,17 @@ object DetailsPage {
     }
 
     def loadDetails(symbol: String): Callback =
-      Net
-        .getDetails(symbol, "1day")
-        .onComplete { xhr =>
-          stopLoading >> Callback.log(xhr) >> setDetails(xhr.responseText)
-        }
-        .asCallback
+      $.props >>= { props =>
+        val proxy = props.proxy()
+        val period = proxy.currentPeriod
+
+        Net
+          .getDetails(symbol, period)
+          .onComplete { xhr =>
+            stopLoading >> setDetails(xhr.responseText)
+          }
+          .asCallback
+      }
 
     def setLoading(v: Boolean) =
       $.modState(_.copy(loading = v))
@@ -51,8 +56,11 @@ object DetailsPage {
       setLoading(false)
 
     def mounted: Callback =
-      Callback.log("Mounted index") >>
-        startLoading >>
+      startLoading >>
+        ($.props.map(_.symbol) >>= loadDetails)
+
+    def willReceiveProps: Callback =
+      startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
     def formatPopularity(details: Details) = {
@@ -68,7 +76,7 @@ object DetailsPage {
             ^.className := "title",
             s"$$$symbol"
           ),
-          <.p(
+          <.div(
             ^.className := "subtitle",
             <.p(
               "Some numbers:"
@@ -147,6 +155,7 @@ object DetailsPage {
     .initialState(State(false, None))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
+    .componentWillReceiveProps(_.backend.willReceiveProps)
     .build
 
   def apply(props: Props) = Component(props)
