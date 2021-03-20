@@ -26,9 +26,11 @@ object Chart {
   case class State()
 
   class Backend($ : BackendScope[Props, State]) {
+    def domElement =
+      $.getDOMNode.map(dom => dom.toElement.get.asInstanceOf[HTMLElement])
+
     def initChart(p: Props): Callback =
-      $.getDOMNode.map { dom =>
-        val el = dom.toElement.get.asInstanceOf[HTMLElement]
+      domElement.map { el =>
         val chart = echarts.init(el)
         chart.setOption(p.opts)
         chart
@@ -37,14 +39,12 @@ object Chart {
     def mounted: Callback =
       ($.props >>= initChart)
 
-    def update(np: Props): Callback = {
+    def update(np: Props): Callback =
       Callback.log("Got new props") >>
-        $.getDOMNode.map { dom =>
-          val el = dom.toElement.get.asInstanceOf[HTMLElement]
+        domElement.map { el =>
           val chart = echarts.getInstanceByDom(el)
           chart.setOption(np.opts)
         } >> Callback.log("updated chart")
-    }
 
     def render(props: Props, state: State): VdomElement = {
       <.div(
