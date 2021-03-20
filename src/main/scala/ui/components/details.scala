@@ -137,7 +137,7 @@ object DetailsPage {
           <.button(
             ^.onClick --> ctl.set(AppRouter.Index),
             ^.className := "button is-info",
-            <.i(^.className := s"fas fa-arrow-left")
+            <.i(^.className := "fas fa-arrow-left")
           )
         ),
         state.details
