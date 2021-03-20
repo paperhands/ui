@@ -141,11 +141,14 @@ object DetailsPage {
           )
         ),
         state.details
-          .map(formatPopularity),
-        state.details
-          .map(engagementAndMentionChart),
-        state.details
-          .map(sentimentChart)
+          .map { details =>
+            <.div(
+              formatPopularity(details),
+              engagementAndMentionChart(details),
+              sentimentChart(details)
+            )
+
+          }
       )
     }
   }

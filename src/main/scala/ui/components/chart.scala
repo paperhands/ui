@@ -33,10 +33,9 @@ object Chart {
       domElement.map { el =>
         val chart = echarts.init(el)
         chart.setOption(p.opts)
-        chart
       } >> Callback.log("initialized chart")
 
-    def mounted: Callback =
+    def mount: Callback =
       ($.props >>= initChart)
 
     def update(np: Props): Callback =
@@ -45,6 +44,12 @@ object Chart {
           val chart = echarts.getInstanceByDom(el)
           chart.setOption(np.opts)
         } >> Callback.log("updated chart")
+
+    def unmount: Callback =
+      domElement.map { el =>
+        val chart = echarts.getInstanceByDom(el)
+        chart.dispose
+      } >> Callback.log("destroyed chart")
 
     def render(props: Props, state: State): VdomElement = {
       <.div(
@@ -57,8 +62,9 @@ object Chart {
     .builder[Props]
     .initialState(State())
     .renderBackend[Backend]
-    .componentDidMount(_.backend.mounted)
+    .componentDidMount(_.backend.mount)
     .componentWillReceiveProps(scope => scope.backend.update(scope.nextProps))
+    .componentWillUnmount(_.backend.unmount)
     .build
 
   def apply(props: Props) = Component(props)
