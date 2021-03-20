@@ -130,7 +130,7 @@ object DetailsPage {
       val ctl = props.ctl
 
       <.div(
-        Loading.Modal().when(state.loading),
+        Loading.Modal(state.loading),
         Tabs(Tabs.Props(props.proxy)),
         <.div(
           ^.className := "block",

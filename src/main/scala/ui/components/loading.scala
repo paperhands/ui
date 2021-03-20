@@ -6,9 +6,12 @@ import japgolly.scalajs.react.vdom.html_<^._
 
 object Loading {
   val Modal = ScalaComponent
-    .static(
+    .builder[Boolean]
+    .render_P { isActive =>
+      val klass = if (isActive) "is-active" else ""
+
       <.div(
-        ^.className := "modal is-active",
+        ^.className := s"modal $klass",
         <.div(
           ^.className := "modal-background"
         ),
@@ -24,5 +27,6 @@ object Loading {
           )
         )
       )
-    )
+    }
+    .build
 }

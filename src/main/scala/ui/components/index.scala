@@ -149,7 +149,7 @@ object IndexPage {
       val trending = state.trending
 
       <.div(
-        Loading.Modal().when(state.loading),
+        Loading.Modal(state.loading),
         Tabs(Tabs.Props(props.proxy)),
         heroSection(proxy.currentPeriod),
         TrendingTable(ctl, trending)
