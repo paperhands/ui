@@ -21,8 +21,7 @@ object DetailsPage {
   case class Props(
       proxy: ModelProxy[AppState],
       ctl: RouterCtl[AppRouter.Page],
-      symbol: String,
-      interval: String
+      symbol: String
   )
 
   case class State(loading: Boolean, details: Option[Details])

@@ -11,7 +11,7 @@ import app.paperhands.diode.AppCircuit
 object AppRouter {
   sealed trait Page
   case object Index extends Page
-  case class Details(symbol: String, period: String) extends Page
+  case class Details(symbol: String) extends Page
 
   val connection = AppCircuit.connect(m => m.state)
 
@@ -20,7 +20,7 @@ object AppRouter {
     (trimSlashes
       | staticRoute(root, Index) ~> renderR(renderIndexPage)
       | dynamicRouteCT(
-        ("#details" / string("[a-z]+") / string("[0-9]+[a-z]+"))
+        ("#details" / string("[a-z]+"))
           .caseClass[Details]
       ) ~> dynRenderR(renderDetailsPage))
       .notFound(redirectToPage(Index)(Redirect.Replace))
@@ -35,7 +35,7 @@ object AppRouter {
       ctl: RouterCtl[Page]
   ) = {
     connection(proxy =>
-      DetailsPage(DetailsPage.Props(proxy, ctl, params.symbol, params.period))
+      DetailsPage(DetailsPage.Props(proxy, ctl, params.symbol))
     )
   }
 

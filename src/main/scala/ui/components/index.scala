@@ -49,7 +49,7 @@ object IndexPage {
     <.tr(
       ^.className := "is-clickable",
       ^.onClick --> ctl.set(
-        AppRouter.Details(t.symbol.toLowerCase, "1day")
+        AppRouter.Details(t.symbol.toLowerCase)
       ),
       <.td(
         ^.className := "has-text-weight-bold",
