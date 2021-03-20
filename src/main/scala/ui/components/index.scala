@@ -122,6 +122,25 @@ object IndexPage {
       startLoading >>
         loadTrending
 
+    def heroSection(period: String) =
+      <.section(
+        ^.className := "hero is-link mb-6",
+        <.div(
+          ^.className := "hero-body",
+          <.p(
+            ^.className := "title",
+            "Popularity of stonks on WSB"
+          ),
+          <.div(
+            ^.className := "subtitle",
+            <.p(
+              "Compared to the previous period of ",
+              <.span(^.className := "has-text-weight-bold", period)
+            )
+          )
+        )
+      )
+
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
       val proxy = props.proxy()
@@ -130,6 +149,7 @@ object IndexPage {
       <.div(
         Loading.Modal().when(state.loading),
         Tabs(Tabs.Props(props.proxy)),
+        heroSection(proxy.currentPeriod),
         TrendingTable(ctl, trending)
       )
     }

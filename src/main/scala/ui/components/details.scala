@@ -147,7 +147,6 @@ object DetailsPage {
               engagementAndMentionChart(details),
               sentimentChart(details)
             )
-
           }
       )
     }
