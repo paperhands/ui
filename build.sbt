@@ -37,9 +37,8 @@ lazy val root = (project in file("."))
       "com.github.japgolly.scalajs-react" %%% "core" % scalaReactVersion,
       "com.github.japgolly.scalajs-react" %%% "extra" % scalaReactVersion,
 
-       "io.monix" %% "minitest" % minitestVersion % "test",
-       "io.monix" %% "minitest-laws" % minitestVersion % "test",
-       "com.codecommit" %% "cats-effect-testing-minitest" % "0.5.2" % "test",
+       "io.monix" %%% "minitest" % minitestVersion % "test",
+       "io.monix" %%% "minitest-laws" % minitestVersion % "test",
 
        "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
        "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3

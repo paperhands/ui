@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: apk add make
-    - run: make apk-deps alpine-install-sbt compileJS public-copy public-commit public-push
+    - run: make apk-deps alpine-install-sbt test compileJS public-copy public-commit public-push
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
         GH_USER: ${{ secrets.GH_USER }}

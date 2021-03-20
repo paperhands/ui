@@ -27,8 +27,31 @@ object DetailsPage {
   case class State(loading: Boolean, details: Option[Details])
 
   class Backend($ : BackendScope[Props, State]) {
-    def setDetails(body: String): Callback = {
-      val details = Model.as[Details](body)
+    def formatDatetimeString(s: String, period: String) =
+      Format.formatDateFor(Parse.dateFromString(s), period)
+
+    def formatTimeseries(ts: Timeseries, period: String): Timeseries =
+      js.Dynamic
+        .literal(
+          "titles" -> ts.titles.map(formatDatetimeString(_, period)),
+          "data" -> ts.data
+        )
+        .asInstanceOf[Timeseries]
+
+    // TODO this is ugly, think about a better way
+    def formatDetails(details: Details, period: String): Details =
+      js.Dynamic
+        .literal(
+          "mentions" -> formatTimeseries(details.mentions, period),
+          "engagements" -> formatTimeseries(details.engagements, period),
+          "sentiments" -> formatTimeseries(details.sentiments, period),
+          "price" -> formatTimeseries(details.price, period),
+          "popularity" -> details.popularity
+        )
+        .asInstanceOf[Details]
+
+    def setDetails(body: String, period: String): Callback = {
+      val details = formatDetails(Model.as[Details](body), period)
       $.modState(_.copy(details = Some(details)))
     }
 
@@ -40,7 +63,7 @@ object DetailsPage {
         Net
           .getDetails(symbol, period)
           .onComplete { xhr =>
-            stopLoading >> setDetails(xhr.responseText)
+            stopLoading >> setDetails(xhr.responseText, period)
           }
           .asCallback
       }
