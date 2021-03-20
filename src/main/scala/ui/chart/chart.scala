@@ -97,7 +97,6 @@ object ChartOpts {
     )
 
   def optsFromTimeseriesAndSeries(
-      title: String,
       legend: js.Array[String],
       ts: Timeseries,
       series: js.Array[js.Object]
@@ -126,7 +125,6 @@ object ChartOpts {
         )
       ),
       "title" -> obj(
-        "text" -> title
       )
     )
 

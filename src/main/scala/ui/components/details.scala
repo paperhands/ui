@@ -104,7 +104,6 @@ object DetailsPage {
 
       val opts = ChartOpts
         .optsFromTimeseriesAndSeries(
-          "Engagement & Mentions",
           js.Array("Engagement", "Mentions"),
           data.engagements,
           series
@@ -116,7 +115,6 @@ object DetailsPage {
       val ts = data.sentiments
 
       val opts = ChartOpts.optsFromTimeseriesAndSeries(
-        "Sentiment",
         js.Array("Sentiment"),
         ts,
         ChartOpts.sentimentSeries(ts)
@@ -124,6 +122,9 @@ object DetailsPage {
 
       chrartFromOpts(opts)
     }
+
+    def title(t: String) =
+      <.h1(^.className := "title", t)
 
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
@@ -143,7 +144,9 @@ object DetailsPage {
           .map { details =>
             <.div(
               formatPopularity(details),
+              title("Engagement & Mentions"),
               engagementAndMentionChart(details),
+              title("Sentiment"),
               sentimentChart(details)
             )
           }
