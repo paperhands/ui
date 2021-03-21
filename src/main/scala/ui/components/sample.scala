@@ -58,6 +58,13 @@ object SamplesPage {
     def mounted: Callback =
       reloadSamples
 
+    def renderSentiment(s: Int) =
+      s match {
+        case 1 => "🐂"
+        case 2 => "🐻"
+        case _ => ""
+      }
+
     def renderContent(content: Content) =
       <.div(
         ^.className := "box",
@@ -67,7 +74,10 @@ object SamplesPage {
           <.p(content.body),
           <.p(<.strong("Symbols: "), content.parsed.symbols.mkString(", "))
             .when(content.parsed.symbols.length > 0),
-          <.p(<.strong("Sentiment: "), content.parsed.sentiment)
+          <.p(
+            <.strong("Sentiment: "),
+            renderSentiment(content.parsed.sentiment)
+          )
             .when(content.parsed.sentiment > 0)
         )
       )
