@@ -91,7 +91,7 @@ object SamplesPage {
         <.div(
           ^.className := "block",
           <.button(
-            ^.onClick --> ctl.set(AppRouter.Index),
+            ^.onClick --> ctl.set(AppRouter.Details(props.symbol)),
             ^.className := "button is-info",
             <.i(^.className := "fas fa-arrow-left")
           ),
