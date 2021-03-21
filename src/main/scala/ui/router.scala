@@ -12,6 +12,7 @@ object AppRouter {
   sealed trait Page
   case object Index extends Page
   case class Details(symbol: String) extends Page
+  case class Samples(symbol: String) extends Page
 
   val connection = AppCircuit.connect(m => m.state)
 
@@ -22,7 +23,11 @@ object AppRouter {
       | dynamicRouteCT(
         ("#details" / string("[a-z]+"))
           .caseClass[Details]
-      ) ~> dynRenderR(renderDetailsPage))
+      ) ~> dynRenderR(renderDetailsPage)
+      | dynamicRouteCT(
+        ("#samples" / string("[a-z]+"))
+          .caseClass[Samples]
+      ) ~> dynRenderR(renderSamplesPage))
       .notFound(redirectToPage(Index)(Redirect.Replace))
   }
 
@@ -36,6 +41,15 @@ object AppRouter {
   ) = {
     connection(proxy =>
       DetailsPage(DetailsPage.Props(proxy, ctl, params.symbol))
+    )
+  }
+
+  def renderSamplesPage(
+      params: Samples,
+      ctl: RouterCtl[Page]
+  ) = {
+    connection(proxy =>
+      SamplesPage(SamplesPage.Props(proxy, ctl, params.symbol))
     )
   }
 
