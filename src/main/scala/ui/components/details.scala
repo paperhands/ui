@@ -17,6 +17,8 @@ import app.paperhands.chart._
 import scala.scalajs.js
 import scala.scalajs.js.`|`
 
+import monocle.macros.syntax.all._
+
 object DetailsPage {
   case class Props(
       proxy: ModelProxy[AppState],
@@ -27,31 +29,27 @@ object DetailsPage {
   case class State(loading: Boolean, details: Option[Details])
 
   class Backend($ : BackendScope[Props, State]) {
-    def formatDatetimeString(s: String, period: String) =
-      Format.formatDateFor(Parse.dateFromString(s), period)
+    def fmtDatetimeString(s: String, period: String) =
+      Format.fmtDateFor(Parse.dateFromString(s), period)
 
-    def formatTimeseries(ts: Timeseries, period: String): Timeseries =
-      js.Dynamic
-        .literal(
-          titles = ts.titles.map(formatDatetimeString(_, period)),
-          data = ts.data
-        )
-        .asInstanceOf[Timeseries]
+    def fmtTimeseries(ts: Timeseries, period: String): Timeseries =
+      TimeseriesLens.titles.modify(_.map(fmtDatetimeString(_, period)))(ts)
 
-    // TODO this is ugly, think about a better way
-    def formatDetails(details: Details, period: String): Details =
-      js.Dynamic
-        .literal(
-          mentions = formatTimeseries(details.mentions, period),
-          engagements = formatTimeseries(details.engagements, period),
-          sentiments = formatTimeseries(details.sentiments, period),
-          price = formatTimeseries(details.price, period),
-          popularity = details.popularity
-        )
-        .asInstanceOf[Details]
+    def modifyDetailsLens(period: String) =
+      List(
+        DetailsLens.mentions,
+        DetailsLens.engagements,
+        DetailsLens.sentiments,
+        DetailsLens.price
+      )
+        .map(_.modify(fmtTimeseries(_, period)))
+        .reduce(_ compose _)
+
+    def fmtDetails(details: Details, period: String): Details =
+      modifyDetailsLens(period)(details)
 
     def setDetails(body: String, period: String): Callback = {
-      val details = formatDetails(Model.as[Details](body), period)
+      val details = fmtDetails(Model.as[Details](body), period)
       $.modState(_.copy(details = Some(details)))
     }
 
@@ -85,7 +83,7 @@ object DetailsPage {
       startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
-    def formatPopularity(details: Details) = {
+    def fmtPopularity(details: Details) = {
       val symbol = details.popularity.symbol
       val engagements = details.popularity.engagements
       val mentions = details.popularity.mentions
@@ -166,7 +164,7 @@ object DetailsPage {
         state.details
           .map { details =>
             <.div(
-              formatPopularity(details),
+              fmtPopularity(details),
               title("Engagement & Mentions"),
               engagementAndMentionChart(details),
               title("Sentiment"),

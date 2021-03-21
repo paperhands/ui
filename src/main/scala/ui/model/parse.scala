@@ -15,7 +15,7 @@ object Parse {
 }
 
 object Format {
-  def formatDateFor(d: Date, period: String): String = {
+  def fmtDateFor(d: Date, period: String): String = {
     // dddd, mmmm dS, yyyy, hh:MM:ss TT
     val f = period match {
       case "1D" => "HH:MM"
@@ -23,7 +23,7 @@ object Format {
       case "1W" => "dddd"
       case "1M" => "mmm. d"
       case "6M" => "mmm. d, yy"
-      case "1Y" => "mmm.d, yy"
+      case "1Y" => "mmm. d, yy"
       case _    => "dddd, mmmm dS, yyyy, HH:MM:ss"
     }
 

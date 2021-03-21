@@ -1,8 +1,4 @@
 val _scalaVersion = "2.13.5"
-val sttpVersion = "3.1.7"
-val circeVersion = "0.14.0-M4"
-val catsVersion = "2.4.2"
-val catsEffVersion = "2.3.3"
 val scalaJSDomVersion = "1.1.0"
 val diodeVersion = "1.1.14"
 val scalaReactVersion = "1.7.7"
@@ -24,12 +20,10 @@ lazy val root = (project in file("."))
     name := "paperhands-ui",
 
     testFrameworks += new TestFramework("minitest.runner.Framework"),
+    scalacOptions in Global += "-Ymacro-annotations",
 
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
-
-      "org.typelevel" %% "cats-core" % catsVersion,
-      "org.typelevel" %% "cats-effect" % catsEffVersion,
 
       "io.suzaku" %%% "diode" % diodeVersion,
       "io.suzaku" %%% "diode-react" % diodeVersion,
@@ -40,8 +34,8 @@ lazy val root = (project in file("."))
        "io.monix" %%% "minitest" % minitestVersion % "test",
        "io.monix" %%% "minitest-laws" % minitestVersion % "test",
 
-       "com.github.julien-truffaut" %% "monocle-core"  % monocleVersion,
-       "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion, // Not required for Scala 3
+       "com.github.julien-truffaut" %%% "monocle-core"  % monocleVersion,
+       "com.github.julien-truffaut" %%% "monocle-macro" % monocleVersion, // Not required for Scala 3
     ),
 
     useYarn := true,
