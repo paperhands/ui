@@ -9,4 +9,5 @@ trait Trending extends js.Object {
   val pos: Int
   @JSName("change_perc") val changePerc: Double
   @JSName("old_pos") val oldPos: Int
+  val popularity: Int
 }

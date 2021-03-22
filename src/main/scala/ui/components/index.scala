@@ -59,7 +59,8 @@ object IndexPage {
       ),
       <.td(hideMobile, t.desc),
       formatPositionMove(t),
-      formatPerc(t)
+      formatPerc(t),
+      <.td(t.popularity)
     )
 
   val thead =
@@ -68,7 +69,8 @@ object IndexPage {
         <.th("Stonk"),
         <.th(hideMobile, "Description"),
         <.th("Popularity move"),
-        <.th("Popularity change")
+        <.th("Popularity change"),
+        <.th("Popularity")
       )
     )
 
