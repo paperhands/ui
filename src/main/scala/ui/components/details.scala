@@ -144,9 +144,6 @@ object DetailsPage {
       chrartFromOpts(opts)
     }
 
-    def title(t: String) =
-      <.h1(^.className := "title", t)
-
     def render(props: Props, state: State): VdomElement = {
       val ctl = props.ctl
 
@@ -165,9 +162,26 @@ object DetailsPage {
           .map { details =>
             <.div(
               fmtPopularity(details),
-              title("Engagement & Mentions"),
+              <.h1(
+                ^.className := "title",
+                <.abbr(
+                  ^.title := "Volume of comments engaged in conversation around this stock",
+                  "Engagement"
+                ),
+                " & ",
+                <.abbr(
+                  ^.title := "Volume of comments that directly mention this stock",
+                  "Mentions"
+                )
+              ),
               engagementAndMentionChart(details),
-              title("Sentiment"),
+              <.h1(
+                ^.className := "title",
+                <.abbr(
+                  ^.title := "Sum of bullish and bearish sentiments from comments that directly mention this stock (positive value indicates bullishenss, negative value indicates bearishness)",
+                  "Sentiment"
+                )
+              ),
               sentimentChart(details)
             )
           }
