@@ -178,7 +178,7 @@ object DetailsPage {
               <.h1(
                 ^.className := "title",
                 <.abbr(
-                  ^.title := "Sum of bullish and bearish sentiments from comments that directly mention this stock (positive value indicates bullishenss, negative value indicates bearishness)",
+                  ^.title := "Sum of bull and bear sentiments from comments that directly mention this stock (positive value indicates bullishness, negative value indicates bearishness)",
                   "Sentiment"
                 )
               ),
