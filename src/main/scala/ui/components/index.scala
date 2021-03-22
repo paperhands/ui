@@ -66,11 +66,11 @@ object IndexPage {
   val thead =
     <.thead(
       <.tr(
-        <.th("Stonk"),
-        <.th(hideMobile, "Description"),
-        <.th("Popularity move"),
-        <.th("Popularity change"),
-        <.th("Popularity")
+        <.th(<.abbr(^.title := "Stonk", "$")),
+        <.th(hideMobile, <.abbr(^.title := "Description", "Desc")),
+        <.th(<.abbr(^.title := "Popularity move", "Move")),
+        <.th(<.abbr(^.title := "Popularity change", "Change")),
+        <.th(<.abbr(^.title := "Comment volume", "Volume"))
       )
     )
 
