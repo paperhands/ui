@@ -109,7 +109,7 @@ object DetailsPage {
             <.p(
               ^.className := "ml-3",
               <.span(^.className := "has-text-weight-bold", engagements),
-              " comments involving this symbol"
+              " comments in conversation around this symbol"
             )
           )
         )
