@@ -55,6 +55,8 @@ object DetailsLens {
     d =>
       js.Dynamic
         .literal(
+          symbol = d.symbol,
+          desc = d.desc,
           mentions = t,
           engagements = d.engagements,
           sentiments = d.sentiments,
@@ -68,6 +70,8 @@ object DetailsLens {
     d =>
       js.Dynamic
         .literal(
+          symbol = d.symbol,
+          desc = d.desc,
           mentions = d.mentions,
           engagements = t,
           sentiments = d.sentiments,
@@ -81,6 +85,8 @@ object DetailsLens {
     d =>
       js.Dynamic
         .literal(
+          symbol = d.symbol,
+          desc = d.desc,
           mentions = d.mentions,
           engagements = d.engagements,
           sentiments = t,
@@ -94,24 +100,13 @@ object DetailsLens {
     d =>
       js.Dynamic
         .literal(
+          symbol = d.symbol,
+          desc = d.desc,
           mentions = d.mentions,
           engagements = d.engagements,
           sentiments = d.sentiments,
           price = t,
           popularity = d.popularity
-        )
-        .asInstanceOf[Details]
-  )
-
-  val popularity = Lens[Details, Popularity](_.popularity)(p =>
-    d =>
-      js.Dynamic
-        .literal(
-          mentions = d.mentions,
-          engagements = d.engagements,
-          sentiments = d.sentiments,
-          price = d.price,
-          popularity = p
         )
         .asInstanceOf[Details]
   )
