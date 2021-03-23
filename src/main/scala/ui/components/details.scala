@@ -79,9 +79,8 @@ object DetailsPage {
       startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
-    def willReceiveProps: Callback =
-      startLoading >>
-        ($.props.map(_.symbol) >>= loadDetails)
+    def willReceiveProps(np: Props): Callback =
+      startLoading >> loadDetails(np.symbol)
 
     def fmtPopularity(details: Details) = {
       val currentPrice = details.currentPrice
@@ -196,7 +195,9 @@ object DetailsPage {
     .initialState(State(false, None))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
-    .componentWillReceiveProps(_.backend.willReceiveProps)
+    .componentWillReceiveProps(scope =>
+      scope.backend.willReceiveProps(scope.nextProps)
+    )
     .build
 
   def apply(props: Props) = Component(props)

@@ -116,8 +116,8 @@ object Search {
               state.results.map { quote =>
                 val s = quote.symbol
                 val d = quote.desc
-                val cb = stopAndReset >> ctl.set(
-                  AppRouter.Details(s)
+                val cb = resetResults >> ctl.set(
+                  AppRouter.Details(s.toLowerCase)
                 )
 
                 <.a(
