@@ -95,7 +95,7 @@ object DetailsPage {
           ^.className := "hero-body",
           <.p(
             ^.className := "title",
-            s"$$$symbol $currentPrice USD"
+            f"$$$symbol $currentPrice%.2f USD"
           ),
           <.div(
             ^.className := "subtitle",
