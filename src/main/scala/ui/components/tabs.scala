@@ -120,13 +120,13 @@ object Tabs {
           ^.className := "columns mb-3",
           <.div(
             ^.className := "column",
-            autoRefresh(props.proxy)
+            Search(Search.Props(props.proxy, props.ctl))
           ),
           <.div(
             ^.className := "column",
             <.div(
               ^.className := "is-pulled-right",
-              Search(Search.Props(props.proxy, props.ctl))
+              autoRefresh(props.proxy)
             )
           )
         )
