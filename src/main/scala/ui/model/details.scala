@@ -43,6 +43,7 @@ object TimeseriesLens {
 trait Details extends js.Object {
   val symbol: String
   val desc: js.UndefOr[String]
+  @JSName("current_price") val currentPrice: Double
   val mentions: Timeseries
   val engagements: Timeseries
   val sentiments: Timeseries
@@ -57,6 +58,7 @@ object DetailsLens {
         .literal(
           symbol = d.symbol,
           desc = d.desc,
+          current_price = d.currentPrice,
           mentions = t,
           engagements = d.engagements,
           sentiments = d.sentiments,
@@ -72,6 +74,7 @@ object DetailsLens {
         .literal(
           symbol = d.symbol,
           desc = d.desc,
+          current_price = d.currentPrice,
           mentions = d.mentions,
           engagements = t,
           sentiments = d.sentiments,
@@ -87,6 +90,7 @@ object DetailsLens {
         .literal(
           symbol = d.symbol,
           desc = d.desc,
+          current_price = d.currentPrice,
           mentions = d.mentions,
           engagements = d.engagements,
           sentiments = t,
@@ -102,6 +106,7 @@ object DetailsLens {
         .literal(
           symbol = d.symbol,
           desc = d.desc,
+          current_price = d.currentPrice,
           mentions = d.mentions,
           engagements = d.engagements,
           sentiments = d.sentiments,

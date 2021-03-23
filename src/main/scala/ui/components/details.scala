@@ -84,6 +84,7 @@ object DetailsPage {
         ($.props.map(_.symbol) >>= loadDetails)
 
     def fmtPopularity(details: Details) = {
+      val currentPrice = details.currentPrice
       val symbol = details.popularity.symbol
       val engagements = details.popularity.engagements
       val mentions = details.popularity.mentions
@@ -94,7 +95,7 @@ object DetailsPage {
           ^.className := "hero-body",
           <.p(
             ^.className := "title",
-            s"$$$symbol"
+            s"$$$symbol $currentPrice USD"
           ),
           <.div(
             ^.className := "subtitle",
