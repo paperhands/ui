@@ -98,8 +98,7 @@ object DetailsPage {
           ),
           <.div(
             ^.className := "subtitle",
-            <.p(^.className := "mb-3", details.desc)
-              .when(details.desc.isDefined),
+            details.desc.map(<.p(^.className := "mb-3", _)),
             <.p(
               "Some numbers:"
             ),
