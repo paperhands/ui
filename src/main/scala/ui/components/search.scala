@@ -30,6 +30,9 @@ object Search {
   case class State(loading: Boolean, results: List[Quote], term: String)
 
   class Backend($ : BackendScope[Props, State]) {
+    def resetTerm =
+      $.modState(_.copy(term = ""))
+
     def resetResults =
       $.modState(_.copy(results = List()))
 
@@ -91,6 +94,7 @@ object Search {
                 ^.className := "input",
                 ^.`type` := "search",
                 ^.placeholder := "Search...",
+                ^.value := state.term,
                 ^.onChange ==> inputChange,
                 ^.onFocus --> stopAndReset,
                 ^.onBlur --> stopAndReset.debounce(1.second)
@@ -116,7 +120,7 @@ object Search {
               state.results.map { quote =>
                 val s = quote.symbol
                 val d = quote.desc
-                val cb = resetResults >> ctl.set(
+                val cb = resetResults >> resetTerm >> ctl.set(
                   AppRouter.Details(s.toLowerCase)
                 )
 
