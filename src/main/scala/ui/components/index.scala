@@ -152,7 +152,6 @@ object IndexPage {
 
       <.div(
         Loading.Modal(state.loading),
-        Tabs(Tabs.Props(props.proxy)),
         heroSection(proxy.currentPeriod),
         TrendingTable(ctl, trending)
       )

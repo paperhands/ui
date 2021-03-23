@@ -152,7 +152,6 @@ object DetailsPage {
 
       <.div(
         Loading.Modal(state.loading),
-        Tabs(Tabs.Props(props.proxy)),
         <.div(
           ^.className := "block",
           <.button(

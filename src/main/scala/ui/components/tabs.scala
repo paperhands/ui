@@ -21,25 +21,101 @@ object Tabs {
 
   case class State()
 
+  def tabs(proxy: ModelProxy[AppState]) = {
+    val appState = proxy()
+    val current = appState.currentPeriod
+    val ranges = List("1D", "5D", "1W", "1M", "6M", "1Y")
+
+    <.div(
+      ^.className := "tabs is-centered",
+      <.ul(
+        ranges.map { interval =>
+          val klass = if (current == interval) "is-active" else ""
+
+          <.li(
+            ^.onClick --> proxy.dispatchCB(SetInterval(interval)),
+            ^.className := klass,
+            <.a(<.span(interval))
+          )
+        }: _*
+      )
+    )
+  }
+
+  val autoRefresh =
+    ScalaComponent
+      .builder[ModelProxy[AppState]]
+      .initialState(false)
+      .render { $ =>
+        val ranges = List("off", "1 min", "5 min", "10 min", "30 min")
+        val proxy = $.props
+        val isActive = $.state
+        val k = if (isActive) "is-active" else ""
+        val appState = proxy()
+        val label = appState.autoRefresh.getOrElse("Auto Refresh")
+        val currentValue = appState.autoRefresh.getOrElse("off")
+
+        <.div(
+          ^.className := s"dropdown $k",
+          <.div(
+            ^.className := "dropdown-trigger",
+            <.button(
+              ^.className := "button",
+              ^.aria.haspopup.`true`,
+              ^.aria.controls := "autorefresh-menu",
+              ^.onClick --> $.modState(!_),
+              <.span(label),
+              <.span(
+                ^.className := "icon is-small",
+                <.i(
+                  ^.className := "fas fa-angle-down",
+                  ^.aria.hidden := true
+                )
+              )
+            )
+          ),
+          <.div(
+            ^.className := "dropdown-menu",
+            ^.role.menu,
+            ^.id := "autorefresh-menu",
+            <.div(
+              ^.className := "dropdown-content",
+              <.div(
+                ^.className := "dropdown-item",
+                <.p("Change auto-refresh interval.")
+              ),
+              <.hr(^.className := "dropdown-divider"),
+              <.div(
+                ranges.map { range =>
+                  val msg = range match {
+                    case "off" => None
+                    case v     => Some(v)
+                  }
+
+                  val cb = proxy.dispatchCB(
+                    SetAutoRefresh(msg)
+                  ) >> $.setState(false)
+
+                  val k = if (currentValue == range) "is-active" else ""
+
+                  <.a(
+                    ^.className := s"dropdown-item $k",
+                    ^.onClick --> cb,
+                    range
+                  )
+                }: _*
+              )
+            )
+          )
+        )
+      }
+      .build
+
   class Backend($ : BackendScope[Props, State]) {
     def render(props: Props, state: State): VdomElement = {
-      val proxy = props.proxy()
-      val current = proxy.currentPeriod
-      val ranges = List("1D", "5D", "1W", "1M", "6M", "1Y")
-
       <.div(
-        ^.className := "tabs is-centered",
-        <.ul(
-          ranges.map { interval =>
-            val klass = if (current == interval) "is-active" else ""
-
-            <.li(
-              ^.onClick --> props.proxy.dispatchCB(SetInterval(interval)),
-              ^.className := klass,
-              <.a(<.span(interval))
-            )
-          }: _*
-        )
+        tabs(props.proxy),
+        <.div(^.className := "box", autoRefresh(props.proxy))
       )
     }
   }

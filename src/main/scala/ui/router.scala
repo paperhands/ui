@@ -32,7 +32,9 @@ object AppRouter {
   }
 
   def renderIndexPage(ctl: RouterCtl[Page]) = {
-    connection(proxy => IndexPage(IndexPage.Props(proxy, ctl)))
+    connection(proxy =>
+      Layout(proxy, ctl, IndexPage(IndexPage.Props(proxy, ctl)))
+    )
   }
 
   def renderDetailsPage(
@@ -40,7 +42,11 @@ object AppRouter {
       ctl: RouterCtl[Page]
   ) = {
     connection(proxy =>
-      DetailsPage(DetailsPage.Props(proxy, ctl, params.symbol))
+      Layout(
+        proxy,
+        ctl,
+        DetailsPage(DetailsPage.Props(proxy, ctl, params.symbol))
+      )
     )
   }
 
@@ -49,7 +55,11 @@ object AppRouter {
       ctl: RouterCtl[Page]
   ) = {
     connection(proxy =>
-      SamplesPage(SamplesPage.Props(proxy, ctl, params.symbol))
+      Layout(
+        proxy,
+        ctl,
+        SamplesPage(SamplesPage.Props(proxy, ctl, params.symbol))
+      )
     )
   }
 
