@@ -16,7 +16,8 @@ import scala.scalajs.js
 
 object Tabs {
   case class Props(
-      proxy: ModelProxy[AppState]
+      proxy: ModelProxy[AppState],
+      ctl: RouterCtl[AppRouter.Page]
   )
 
   case class State()
@@ -24,7 +25,7 @@ object Tabs {
   def tabs(proxy: ModelProxy[AppState]) = {
     val appState = proxy()
     val current = appState.currentPeriod
-    val ranges = List("1D", "5D", "1W", "1M", "6M", "1Y")
+    val ranges = AppConnstants.viewRanges
 
     <.div(
       ^.className := "tabs is-centered",
@@ -47,7 +48,7 @@ object Tabs {
       .builder[ModelProxy[AppState]]
       .initialState(false)
       .render { $ =>
-        val ranges = List("off", "1 min", "5 min", "10 min", "30 min")
+        val ranges = AppConnstants.refreshIntervals
         val proxy = $.props
         val isActive = $.state
         val k = if (isActive) "is-active" else ""
@@ -115,7 +116,20 @@ object Tabs {
     def render(props: Props, state: State): VdomElement = {
       <.div(
         tabs(props.proxy),
-        <.div(^.className := "box", autoRefresh(props.proxy))
+        <.div(
+          ^.className := "columns mb-3",
+          <.div(
+            ^.className := "column",
+            autoRefresh(props.proxy)
+          ),
+          <.div(
+            ^.className := "column",
+            <.div(
+              ^.className := "is-pulled-right",
+              Search(Search.Props(props.proxy, props.ctl))
+            )
+          )
+        )
       )
     }
   }

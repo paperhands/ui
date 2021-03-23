@@ -13,6 +13,9 @@ object Net {
   def getTrending(period: String) =
     get(s"api/v1/quote/trending/$period").send("")
 
+  def searchQuotes(term: String) =
+    get(s"api/v1/quote/search/$term").send("")
+
   def getDetails(symbol: String, period: String) =
     get(s"api/v1/quote/details/$symbol/$period").send("")
 
