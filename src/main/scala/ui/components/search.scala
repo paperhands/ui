@@ -27,7 +27,12 @@ object Search {
       ctl: RouterCtl[AppRouter.Page]
   )
 
-  case class State(loading: Boolean, results: List[Quote], term: String)
+  case class State(
+      loading: Boolean,
+      results: List[Quote],
+      term: String,
+      active: Boolean
+  )
 
   class Backend($ : BackendScope[Props, State]) {
     def resetTerm =
@@ -47,7 +52,7 @@ object Search {
       Net
         .searchQuotes(term)
         .onComplete { xhr =>
-          stopLoading >> setSearch(term, xhr.responseText)
+          setSearch(term, xhr.responseText) >> stopLoading
         }
         .asCallback
 
@@ -65,22 +70,33 @@ object Search {
 
     def search(term: String) =
       if (term.length > 1)
-        (startLoading >> resetResults >> loadSearch(term)).debounce(1.second)
+        (startLoading >> resetResults >> loadSearch(term))
+          .rateLimit(2.second, 1)
+          .void
       else
         stopLoading >> resetResults
 
     def inputChange(e: ReactFormEventFromInput) = {
       val term = e.target.value
-      setTerm(term) >> search(term)
+      setActive(true) >> setTerm(term) >> search(term)
     }
+
+    def setActive(v: Boolean) =
+      $.modState(_.copy(active = v))
 
     def stopAndReset =
       stopLoading >> resetResults
 
+    def onFocus =
+      stopAndReset >> setActive(true)
+
+    def onBlur =
+      (stopAndReset >> setActive(false)).debounce(1.second)
+
     def render(props: Props, state: State): VdomElement = {
       val proxy = props.proxy
       val ctl = props.ctl
-      val k = if (state.results.length > 0 || state.loading) "is-active" else ""
+      val k = if (state.active || state.loading) "is-active" else ""
 
       <.div(
         ^.className := s"dropdown $k",
@@ -96,8 +112,8 @@ object Search {
                 ^.placeholder := "Search...",
                 ^.value := state.term,
                 ^.onChange ==> inputChange,
-                ^.onFocus --> stopAndReset,
-                ^.onBlur --> stopAndReset.debounce(1.second)
+                ^.onFocus --> onFocus,
+                ^.onBlur --> onBlur
               ),
               <.span(
                 ^.className := "icon is-small is-right",
@@ -116,6 +132,12 @@ object Search {
               ^.className := "dropdown-item",
               <.p("Loading...")
             ).when(state.loading),
+            <.div(
+              ^.className := "dropdown-item",
+              <.p(s"Nothing found for ${state.term}")
+            ).when(
+              state.active && state.results.length == 0 && !state.loading && state.term.length > 1
+            ),
             <.div(
               state.results.map { quote =>
                 val s = quote.symbol
@@ -139,7 +161,7 @@ object Search {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(false, List(), ""))
+    .initialState(State(false, List(), "", false))
     .renderBackend[Backend]
     .build
 
