@@ -98,8 +98,9 @@ object DetailsPage {
           ),
           <.div(
             ^.className := "subtitle",
-            details.desc.map(<.p(^.className := "mb-3", _)),
+            <.p(details.desc),
             <.p(
+              ^.className := "mt-3",
               "Some numbers:"
             ),
             <.p(

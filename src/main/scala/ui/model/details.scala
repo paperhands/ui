@@ -42,7 +42,7 @@ object TimeseriesLens {
 
 trait Details extends js.Object {
   val symbol: String
-  val desc: Option[String]
+  val desc: js.UndefOr[String]
   val mentions: Timeseries
   val engagements: Timeseries
   val sentiments: Timeseries
