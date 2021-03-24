@@ -12,23 +12,14 @@ object Loading {
     .builder[ModelProxy[AppState]]
     .render_P { proxy =>
       val isActive = proxy().loading
-      val klass = if (isActive) "is-active" else ""
+      val klass = if (isActive) "" else "is-hidden"
 
       <.div(
-        ^.className := s"modal $klass",
-        <.div(
-          ^.className := "modal-background"
-        ),
-        <.div(
-          ^.className := "modal-content",
-          <.div(
-            ^.className := "box",
-            <.progress(
-              ^.className := "progress is-small is-primary",
-              ^.max := "100",
-              "1%"
-            )
-          )
+        ^.className := s"loading-bar $klass",
+        <.progress(
+          ^.className := "progress is-small is-primary",
+          ^.max := "100",
+          "1%"
         )
       )
     }
