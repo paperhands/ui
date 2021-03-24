@@ -21,6 +21,7 @@ object Layout {
       children: VdomNode*
   ) =
     <.div(
+      Loading.Modal(proxy),
       Tabs(Tabs.Props(proxy, ctl)),
       <.div(children: _*)
     )

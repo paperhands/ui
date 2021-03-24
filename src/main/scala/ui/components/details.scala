@@ -26,7 +26,7 @@ object DetailsPage {
       symbol: String
   )
 
-  case class State(loading: Boolean, details: Option[Details])
+  case class State(details: Option[Details])
 
   class Backend($ : BackendScope[Props, State]) {
     def fmtDatetimeString(s: String, period: String) =
@@ -67,7 +67,9 @@ object DetailsPage {
       }
 
     def setLoading(v: Boolean) =
-      $.modState(_.copy(loading = v))
+      $.props >>= { props =>
+        AppDispatch.setLoading(props.proxy, v)
+      }
 
     def startLoading =
       setLoading(true)
@@ -79,8 +81,12 @@ object DetailsPage {
       startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
-    def willReceiveProps(np: Props): Callback =
-      startLoading >> loadDetails(np.symbol)
+    def willReceiveProps(np: Props): Callback = {
+      if (np.proxy().shouldRefresh)
+        startLoading >> loadDetails(np.symbol)
+      else
+        Callback.empty
+    }
 
     def fmtPopularity(details: Details) = {
       val currentPrice = details.currentPrice
@@ -150,7 +156,6 @@ object DetailsPage {
       val ctl = props.ctl
 
       <.div(
-        Loading.Modal(state.loading),
         <.div(
           ^.className := "block",
           <.button(
@@ -192,7 +197,7 @@ object DetailsPage {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(false, None))
+    .initialState(State(None))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .componentWillReceiveProps(scope =>

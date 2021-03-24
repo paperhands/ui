@@ -34,7 +34,7 @@ object Tabs {
           val klass = if (current == interval) "is-active" else ""
 
           <.li(
-            ^.onClick --> proxy.dispatchCB(SetInterval(interval)),
+            ^.onClick --> AppDispatch.setInterval(proxy, interval),
             ^.className := klass,
             <.a(<.span(interval))
           )
@@ -88,14 +88,13 @@ object Tabs {
               <.hr(^.className := "dropdown-divider"),
               <.div(
                 ranges.map { range =>
-                  val msg = range match {
+                  val v = range match {
                     case "off" => None
                     case v     => Some(v)
                   }
 
-                  val cb = proxy.dispatchCB(
-                    SetAutoRefresh(msg)
-                  ) >> $.setState(false)
+                  val cb = AppDispatch
+                    .autoRefresh(proxy, v) >> $.setState(false)
 
                   val k = if (currentValue == range) "is-active" else ""
 

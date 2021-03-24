@@ -26,7 +26,7 @@ object SamplesPage {
       symbol: String
   )
 
-  case class State(loading: Boolean, samples: List[Content])
+  case class State(samples: List[Content])
 
   class Backend($ : BackendScope[Props, State]) {
     def setSamples(body: String): Callback = {
@@ -43,7 +43,9 @@ object SamplesPage {
         .asCallback
 
     def setLoading(v: Boolean) =
-      $.modState(_.copy(loading = v))
+      $.props >>= { props =>
+        AppDispatch.setLoading(props.proxy, v)
+      }
 
     def startLoading =
       setLoading(true)
@@ -86,7 +88,6 @@ object SamplesPage {
       val ctl = props.ctl
 
       <.div(
-        Loading.Modal(state.loading),
         <.div(
           ^.className := "block",
           <.button(
@@ -109,7 +110,7 @@ object SamplesPage {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(false, List()))
+    .initialState(State(List()))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .build

@@ -20,7 +20,7 @@ object IndexPage {
       ctl: RouterCtl[AppRouter.Page]
   )
 
-  case class State(loading: Boolean, trending: Seq[Trending])
+  case class State(trending: Seq[Trending])
 
   def formatPositionMove(t: Trending) = {
     val m = t.oldPos - t.pos
@@ -110,7 +110,9 @@ object IndexPage {
       }
 
     def setLoading(v: Boolean) =
-      $.modState(_.copy(loading = v))
+      $.props >>= { props =>
+        AppDispatch.setLoading(props.proxy, v)
+      }
 
     def startLoading =
       setLoading(true)
@@ -122,9 +124,12 @@ object IndexPage {
       startLoading >>
         loadTrending
 
-    def willReceiveProps: Callback =
-      startLoading >>
-        loadTrending
+    def willReceiveProps(np: Props): Callback = {
+      if (np.proxy().shouldRefresh)
+        startLoading >> loadTrending
+      else
+        Callback.empty
+    }
 
     def heroSection(period: String) =
       <.section(
@@ -151,7 +156,6 @@ object IndexPage {
       val trending = state.trending
 
       <.div(
-        Loading.Modal(state.loading),
         heroSection(proxy.currentPeriod),
         TrendingTable(ctl, trending)
       )
@@ -160,10 +164,12 @@ object IndexPage {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(false, List()))
+    .initialState(State(List()))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
-    .componentWillReceiveProps(_.backend.willReceiveProps)
+    .componentWillReceiveProps(scope =>
+      scope.backend.willReceiveProps(scope.nextProps)
+    )
     .build
 
   def apply(props: Props) = Component(props)

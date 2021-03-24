@@ -11,7 +11,9 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
       currentPeriod = "1D",
       autoRefresh = None,
       refreshHandle = None,
-      tickNumber = 0
+      tickNumber = 0,
+      shouldRefresh = false,
+      loading = false
     )
   )
 
@@ -31,17 +33,24 @@ class ExpenditurePageHandler[M](modelRW: ModelRW[M, AppState])
     extends ActionHandler(modelRW) {
   override def handle = {
     case SetInterval(interval) =>
-      updated(value.copy(currentPeriod = interval))
+      updated(value.copy(currentPeriod = interval, shouldRefresh = true))
     case SetAutoRefresh(refresh) =>
       value.refreshHandle.foreach(clearInterval)
 
       updated(
         value.copy(
           autoRefresh = refresh,
-          refreshHandle = refresh.map(Ticker.newInterval)
+          refreshHandle = refresh.map(Ticker.newInterval),
+          shouldRefresh = false
         )
       )
     case RefreshTick() =>
-      updated(value.copy(tickNumber = value.tickNumber + 1))
+      updated(
+        value.copy(tickNumber = value.tickNumber + 1, shouldRefresh = true)
+      )
+    case SetLoading(v) =>
+      updated(
+        value.copy(loading = v, shouldRefresh = false)
+      )
   }
 }
