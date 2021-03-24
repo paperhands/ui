@@ -81,8 +81,8 @@ object DetailsPage {
       startLoading >>
         ($.props.map(_.symbol) >>= loadDetails)
 
-    def willReceiveProps(np: Props): Callback = {
-      if (np.proxy().shouldRefresh)
+    def willReceiveProps(ol: Props, np: Props): Callback = {
+      if (np.proxy().shouldRefresh || ol.symbol != np.symbol)
         startLoading >> loadDetails(np.symbol)
       else
         Callback.empty
@@ -202,7 +202,7 @@ object DetailsPage {
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .componentWillReceiveProps(scope =>
-      scope.backend.willReceiveProps(scope.nextProps)
+      scope.backend.willReceiveProps(scope.currentProps, scope.nextProps)
     )
     .build
 
