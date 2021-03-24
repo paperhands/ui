@@ -101,6 +101,7 @@ object SamplesPage {
             <.i(^.className := "fas fa-sync")
           )
         ),
+        Loading.Content(state.samples.isEmpty),
         <.div(
           state.samples.map(renderContent): _*
         )

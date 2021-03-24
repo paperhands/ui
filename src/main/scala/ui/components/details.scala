@@ -164,6 +164,7 @@ object DetailsPage {
             <.i(^.className := "fas fa-arrow-left")
           )
         ),
+        Loading.Content(state.details.isEmpty),
         state.details
           .map { details =>
             <.div(

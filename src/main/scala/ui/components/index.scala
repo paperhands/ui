@@ -77,10 +77,12 @@ object IndexPage {
   val TrendingTable = ScalaComponent
     .builder[(RouterCtl[AppRouter.Page], Seq[Trending])]
     .render_P { case (ctl, trending) =>
+      val tableK = if (trending.isEmpty) "is-hidden" else ""
       <.div(
         ^.className := "content",
+        Loading.Content(trending.isEmpty),
         <.table(
-          ^.className := "table is-hoverable",
+          ^.className := s"table is-hoverable $tableK",
           thead,
           <.tbody(
             trending.map(renderTrending(ctl, _)): _*

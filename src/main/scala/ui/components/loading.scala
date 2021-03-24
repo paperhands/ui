@@ -24,4 +24,18 @@ object Loading {
       )
     }
     .build
+
+  val Content = ScalaComponent
+    .builder[Boolean]
+    .render_P { isActive =>
+      val klass = if (isActive) "is-active" else "is-hidden"
+
+      <.div(
+        ^.className := s"loader-wrapper $klass",
+        <.div(
+          ^.className := "loader is-loading"
+        )
+      )
+    }
+    .build
 }
