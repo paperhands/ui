@@ -57,7 +57,7 @@ object Tabs {
         val currentValue = appState.autoRefresh.getOrElse("off")
 
         <.div(
-          ^.className := s"dropdown $k",
+          ^.className := s"dropdown has-text-left $k",
           <.div(
             ^.className := "dropdown-trigger",
             <.button(
@@ -125,7 +125,7 @@ object Tabs {
           <.div(
             ^.className := "column",
             <.div(
-              ^.className := "is-pulled-right",
+              ^.className := "has-text-right-tablet",
               autoRefresh(props.proxy)
             )
           )
