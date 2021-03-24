@@ -10,7 +10,6 @@ case class AppState(
     currentPeriod: String,
     autoRefresh: Option[String],
     refreshHandle: Option[SetIntervalHandle],
-    tickNumber: Int,
     shouldRefresh: Boolean,
     loading: Boolean
 )
@@ -48,11 +47,4 @@ object AppDispatch {
     proxy.dispatchCB(SetLoading(v))
 }
 
-object AppState {
-  def shouldReload(oldS: AppState, newS: AppState) = {
-    println(s"comparing ${oldS.toString()} with $newS")
-
-    oldS.tickNumber != newS.tickNumber ||
-    oldS.currentPeriod != newS.currentPeriod
-  }
-}
+object AppState {}

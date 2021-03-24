@@ -11,7 +11,6 @@ object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
       currentPeriod = "1D",
       autoRefresh = None,
       refreshHandle = None,
-      tickNumber = 0,
       shouldRefresh = false,
       loading = false
     )
@@ -46,7 +45,7 @@ class ExpenditurePageHandler[M](modelRW: ModelRW[M, AppState])
       )
     case RefreshTick() =>
       updated(
-        value.copy(tickNumber = value.tickNumber + 1, shouldRefresh = true)
+        value.copy(shouldRefresh = true)
       )
     case SetLoading(v) =>
       updated(
