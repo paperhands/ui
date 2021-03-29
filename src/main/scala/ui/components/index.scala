@@ -41,7 +41,7 @@ object IndexPage {
     <.td(
       ^.className := color,
       txt,
-      icon.map(ic => <.i(^.className := s"fas $ic"))
+      icon.map(ic => <.span(<.i(^.className := s"fas $ic")))
     )
   }
 
