@@ -96,7 +96,10 @@ object Search {
     def render(props: Props, state: State): VdomElement = {
       val proxy = props.proxy
       val ctl = props.ctl
-      val k = if (state.active || state.loading) "is-active" else ""
+      val k =
+        if ((state.active && !state.results.isEmpty) || state.loading)
+          "is-active"
+        else ""
 
       <.div(
         ^.className := s"dropdown $k",
