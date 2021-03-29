@@ -24,13 +24,24 @@ object IndexPage {
 
   def formatPositionMove(t: Trending) = {
     val m = t.oldPos - t.pos
-    val icon = if (m < 0) "fa-arrow-down" else "fa-arrow-up"
-    val color = if (m < 0) "has-text-danger-dark" else "has-text-success-dark"
+
+    val icon = m match {
+      case 0          => None
+      case _ if m < 0 => Some("fa-arrow-down")
+      case _ if m > 0 => Some("fa-arrow-up")
+    }
+    val color = m match {
+      case 0          => ""
+      case _ if m < 0 => "has-text-danger-dark"
+      case _ if m > 0 => "has-text-success-dark"
+    }
+
+    val txt = if (m == 0) "" else s"$m "
 
     <.td(
       ^.className := color,
-      s"$m ",
-      <.i(^.className := s"fas $icon")
+      txt,
+      icon.map(ic => <.i(^.className := s"fas $ic"))
     )
   }
 
