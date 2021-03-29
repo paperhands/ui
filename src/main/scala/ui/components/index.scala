@@ -23,7 +23,8 @@ object IndexPage {
   case class State(trending: Seq[Trending])
 
   def formatPositionMove(t: Trending) = {
-    val m = t.oldPos - t.pos
+    val limit = 20
+    val m = if (t.oldPos < 0) limit - t.pos else t.oldPos - t.pos
 
     val icon = m match {
       case 0          => None
