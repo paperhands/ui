@@ -75,7 +75,7 @@ object SamplesPage {
           <.p(<.strong(content.author), " ", content.createdTime),
           <.p(content.body),
           <.p(<.strong("Symbols: "), content.parsed.symbols.mkString(", "))
-            .when(content.parsed.symbols.length > 0),
+            .when(!content.parsed.symbols.isEmpty),
           <.p(
             <.strong("Sentiment: "),
             renderSentiment(content.parsed.sentiment)

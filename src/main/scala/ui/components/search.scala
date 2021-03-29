@@ -139,7 +139,7 @@ object Search {
               ^.className := "dropdown-item",
               <.p(s"Nothing found for ${state.term}")
             ).when(
-              state.active && state.results.length == 0 && !state.loading && state.term.length > 1
+              state.active && state.results.isEmpty && !state.loading && state.term.length > 1
             ),
             <.div(
               state.results.map { quote =>
