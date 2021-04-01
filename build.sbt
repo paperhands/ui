@@ -11,8 +11,8 @@ ThisBuild / scalaVersion     := _scalaVersion
 ThisBuild / version          := "0.1.0"
 ThisBuild / organization     := "app.paperhands"
 ThisBuild / organizationName := "paperhands"
-
-resolvers += Resolver.bintrayRepo("oyvindberg", "ScalablyTyped")
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
 lazy val root = (project in file("."))
   .enablePlugins(ScalaJSBundlerPlugin)
@@ -20,7 +20,12 @@ lazy val root = (project in file("."))
     name := "paperhands-ui",
 
     testFrameworks += new TestFramework("minitest.runner.Framework"),
-    scalacOptions in Global += "-Ymacro-annotations",
+
+    scalacOptions ++= List(
+      "-Ymacro-annotations",
+      "-Yrangepos",
+      "-Wunused:imports"
+    ),
 
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % scalaJSDomVersion,
@@ -50,3 +55,6 @@ lazy val root = (project in file("."))
     scalaJSUseMainModuleInitializer := true,
     Global / onChangedBuildSource := ReloadOnSourceChanges,
   )
+
+addCommandAlias("organizeImports", "scalafix dependency:OrganizeImports@com.github.liancheng:organize-imports:0.5.0")
+addCommandAlias("cleanImports", "scalafix RemoveUnused")
