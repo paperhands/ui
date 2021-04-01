@@ -2,8 +2,9 @@ package app.paperhands.diode
 
 import diode._
 import diode.react.ReactConnector
-import scala.scalajs.js.timers.{setInterval, clearInterval}
-import scala.concurrent.duration._
+
+import scala.scalajs.js.timers.clearInterval
+import scala.scalajs.js.timers.setInterval
 
 object AppCircuit extends Circuit[AppModel] with ReactConnector[AppModel] {
   def initialModel = AppModel(

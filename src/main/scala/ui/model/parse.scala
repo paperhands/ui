@@ -1,8 +1,9 @@
 package app.paperhands.model
 
-import scala.scalajs.js.{Date, JSON}
-
 import app.paperhands.dateformat.dateFormat
+
+import scala.scalajs.js.Date
+import scala.scalajs.js.JSON
 
 object Model {
   def as[A](body: String): A =

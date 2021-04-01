@@ -1,12 +1,9 @@
 package app.paperhands.router
 
-import diode.react.ModelProxy
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router._
-import japgolly.scalajs.react.vdom.html_<^._
-
 import app.paperhands.components._
 import app.paperhands.diode.AppCircuit
+import japgolly.scalajs.react.extra.router._
+import japgolly.scalajs.react.vdom.html_<^._
 
 object AppRouter {
   sealed trait Page

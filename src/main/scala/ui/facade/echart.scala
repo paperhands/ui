@@ -1,8 +1,9 @@
 package app.paperhands.echarts
 
+import org.scalajs.dom
+
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import org.scalajs.dom
 
 @JSImport("echarts", JSImport.Namespace)
 @js.native

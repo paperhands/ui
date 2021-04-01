@@ -1,10 +1,8 @@
 package app.paperhands.components
 
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
-import scala.scalajs.js
 
 object Fa {
   case class Props(

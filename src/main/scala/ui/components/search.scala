@@ -1,25 +1,17 @@
 package app.paperhands.components
 
-import scala.concurrent.duration._
-
-import org.scalajs.dom.raw.HTMLElement
-
+import app.paperhands.diode._
+import app.paperhands.model._
+import app.paperhands.net._
+import app.paperhands.router.AppRouter
 import diode.react.ModelProxy
-
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
-import app.paperhands.router.AppRouter
-import app.paperhands.diode._
-import app.paperhands.model._
-import app.paperhands.net._
-import app.paperhands.chart._
-
+import scala.concurrent.duration._
 import scala.scalajs.js
-import scala.scalajs.js.`|`
 
-import monocle.macros.syntax.all._
 
 object Search {
   case class Props(

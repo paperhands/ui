@@ -1,10 +1,10 @@
 package app.paperhands.diode
 
 import diode.Action
-
-import scala.scalajs.js.timers.SetIntervalHandle
-import scala.concurrent.duration._
 import diode.react.ModelProxy
+
+import scala.concurrent.duration._
+import scala.scalajs.js.timers.SetIntervalHandle
 
 case class AppState(
     currentPeriod: String,

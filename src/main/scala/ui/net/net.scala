@@ -1,7 +1,7 @@
 package app.paperhands.net
 
-import japgolly.scalajs.react.extra.Ajax
 import app.paperhands.config.Config
+import japgolly.scalajs.react.extra.Ajax
 
 object Net {
   private def pref(p: String) =

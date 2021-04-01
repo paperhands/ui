@@ -1,8 +1,7 @@
 package app.paperhands.main
 
-import org.scalajs.dom.document
-
 import app.paperhands.router.AppRouter
+import org.scalajs.dom.document
 
 object App {
   def main(args: Array[String]): Unit = {

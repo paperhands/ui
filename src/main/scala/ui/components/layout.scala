@@ -1,18 +1,11 @@
 package app.paperhands.components
 
+import app.paperhands.diode._
+import app.paperhands.router.AppRouter
 import diode.react.ModelProxy
-
-import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router._
-import japgolly.scalajs.react.extra.Ajax
 import japgolly.scalajs.react.vdom.html_<^._
 
-import app.paperhands.router.AppRouter
-import app.paperhands.diode._
-import app.paperhands.model._
-import app.paperhands.net._
-
-import scala.scalajs.js
 
 object Layout {
   def apply(

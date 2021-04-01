@@ -3,7 +3,6 @@ package app.paperhands.dateformat
 import scala.scalajs.js
 import scala.scalajs.js.Date
 import scala.scalajs.js.annotation.JSImport
-import org.scalajs.dom
 
 @JSImport("dateformat", JSImport.Namespace)
 @js.native

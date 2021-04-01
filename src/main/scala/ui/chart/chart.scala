@@ -1,10 +1,9 @@
 package app.paperhands.chart
 
+import app.paperhands.echarts._
 import app.paperhands.model._
 
 import scala.scalajs.js
-import scala.scalajs.js.`|`
-import app.paperhands.echarts._
 
 object ChartOpts {
   import js.JSConverters._

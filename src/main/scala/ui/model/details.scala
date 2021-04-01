@@ -1,11 +1,9 @@
 package app.paperhands.model
 
-import scala.scalajs.js
-import scala.scalajs.js.`|`
-import scala.scalajs.js.annotation.JSName
-
 import monocle.Lens
-import monocle.macros.syntax.all._
+
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSName
 
 trait Popularity extends js.Object {
   val symbol: String

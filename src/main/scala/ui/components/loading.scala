@@ -1,11 +1,9 @@
 package app.paperhands.components
 
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router._
-import japgolly.scalajs.react.vdom.html_<^._
-
-import diode.react.ModelProxy
 import app.paperhands.diode._
+import diode.react.ModelProxy
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
 
 object Loading {
   val Modal = ScalaComponent

@@ -1,16 +1,9 @@
 package app.paperhands.components
 
-import org.scalajs.dom.raw.HTMLElement
-
-import diode.react.ModelProxy
-
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.extra.router._
-import japgolly.scalajs.react.vdom.html_<^._
-
-import app.paperhands.router.AppRouter
-import app.paperhands.diode._
 import app.paperhands.echarts._
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
+import org.scalajs.dom.raw.HTMLElement
 
 import scala.scalajs.js
 
