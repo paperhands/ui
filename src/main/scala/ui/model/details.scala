@@ -8,7 +8,9 @@ import scala.scalajs.js.annotation.JSName
 trait Popularity extends js.Object {
   val symbol: String
   val mentions: Int
+  val mention_users: Int
   val engagements: Int
+  val engagement_users: Int
 }
 
 trait Timeseries extends js.Object {

@@ -1,6 +1,5 @@
 package app.paperhands.components
 
-
 import app.paperhands.chart._
 import app.paperhands.diode._
 import app.paperhands.model._
@@ -12,7 +11,6 @@ import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
 import scala.scalajs.js
-
 
 object DetailsPage {
   case class Props(
@@ -86,8 +84,10 @@ object DetailsPage {
     def fmtPopularity(details: Details) = {
       val currentPrice = details.currentPrice
       val symbol = details.popularity.symbol
-      val engagements = details.popularity.engagements
       val mentions = details.popularity.mentions
+      val mentionUsers = details.popularity.mention_users
+      val engagements = details.popularity.engagements
+      val engagementUsers = details.popularity.engagement_users
 
       <.section(
         ^.className := "hero is-link mb-6",
@@ -107,12 +107,16 @@ object DetailsPage {
             <.p(
               ^.className := "ml-3",
               <.span(^.className := "has-text-weight-bold", mentions),
-              " times mentioned directly"
+              " times mentioned directly by ",
+              <.span(^.className := "has-text-weight-bold", mentionUsers),
+              " unique users"
             ),
             <.p(
               ^.className := "ml-3",
               <.span(^.className := "has-text-weight-bold", engagements),
-              " comments in conversation around this symbol"
+              " comments in conversation around this symbol by ",
+              <.span(^.className := "has-text-weight-bold", engagementUsers),
+              " unique users"
             )
           )
         )
