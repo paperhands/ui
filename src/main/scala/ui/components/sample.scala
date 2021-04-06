@@ -1,6 +1,5 @@
 package app.paperhands.components
 
-
 import app.paperhands.diode._
 import app.paperhands.model._
 import app.paperhands.net._
@@ -11,7 +10,6 @@ import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
 import scala.scalajs.js
-
 
 object SamplesPage {
   case class Props(

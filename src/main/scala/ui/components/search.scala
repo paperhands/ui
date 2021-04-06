@@ -12,7 +12,6 @@ import japgolly.scalajs.react.vdom.html_<^._
 import scala.concurrent.duration._
 import scala.scalajs.js
 
-
 object Search {
   case class Props(
       proxy: ModelProxy[AppState],
