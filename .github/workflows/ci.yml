@@ -3,14 +3,24 @@ name: CI
 on: push
 
 jobs:
-  package:
+  test:
     runs-on: ubuntu-latest
     container:
       image: openjdk:14-jdk-alpine
     steps:
     - uses: actions/checkout@v2
     - run: apk add make
-    - run: make apk-deps alpine-install-sbt test compileJS public-copy public-commit public-push
+    - run: make apk-deps alpine-install-sbt test compileJS
+  package:
+    runs-on: ubuntu-latest
+    container:
+      image: openjdk:14-jdk-alpine
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@v2
+    - run: apk add make
+    - run: make apk-deps alpine-install-sbt compileJS public-copy public-commit public-push
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
         GH_USER: ${{ secrets.GH_USER }}

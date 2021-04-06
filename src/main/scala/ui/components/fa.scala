@@ -3,7 +3,6 @@ package app.paperhands.components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 
-
 object Fa {
   case class Props(
       icon: String,
