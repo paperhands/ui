@@ -6,7 +6,6 @@ import diode.react.ModelProxy
 import japgolly.scalajs.react.extra.router._
 import japgolly.scalajs.react.vdom.html_<^._
 
-
 object Layout {
   def apply(
       proxy: ModelProxy[AppState],
