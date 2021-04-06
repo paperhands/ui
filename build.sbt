@@ -36,7 +36,7 @@ lazy val root = (project in file("."))
       "com.github.julien-truffaut" %%% "monocle-macro" % monocleVersion // Not required for Scala 3
     ),
     useYarn := true,
-    npmDependencies in Compile ++= Seq(
+    Compile / npmDependencies ++= Seq(
       "react" -> reactVersion,
       "react-dom" -> reactVersion,
       "echarts" -> echartsVersion,
