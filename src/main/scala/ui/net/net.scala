@@ -23,7 +23,7 @@ object Net {
     get(s"api/v1/quote/details/$symbol/$period").send("")
 
   def getSamples(symbol: String) =
-    get(s"api/v1/content/sample/$symbol").send("")
+    get(s"api/v1/content/samples/$symbol").send("")
 
   def getUnlabeled(limit: Int) =
     get(s"api/v1/content/unlabeled/$limit").send("")
