@@ -8,6 +8,7 @@ import japgolly.scalajs.react.vdom.html_<^._
 object AppRouter {
   sealed trait Page
   case object Index extends Page
+  case object Labeling extends Page
   case class Details(symbol: String) extends Page
   case class Samples(symbol: String) extends Page
 
@@ -22,7 +23,8 @@ object AppRouter {
       ) ~> dynRenderR(renderDetailsPage)
       | dynamicRouteCT(
         ("#samples" / string("[a-z]+")).caseClass[Samples]
-      ) ~> dynRenderR(renderSamplesPage))
+      ) ~> dynRenderR(renderSamplesPage)
+      | staticRoute("#labeling", Labeling) ~> renderR(renderLabelingPage))
       .notFound(redirectToPage(Index)(Redirect.Replace))
   }
 
@@ -53,7 +55,19 @@ object AppRouter {
       Layout(
         proxy,
         ctl,
-        SamplesPage(SamplesPage.Props(proxy, ctl, params.symbol))
+        SamplesPage(SamplesPage.Props(proxy, ctl, false, Some(params.symbol)))
+      )
+    )
+  }
+
+  def renderLabelingPage(
+      ctl: RouterCtl[Page]
+  ) = {
+    connection(proxy =>
+      Layout(
+        proxy,
+        ctl,
+        SamplesPage(SamplesPage.Props(proxy, ctl, true, None))
       )
     )
   }

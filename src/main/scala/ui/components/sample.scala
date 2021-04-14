@@ -15,10 +15,11 @@ object SamplesPage {
   case class Props(
       proxy: ModelProxy[AppState],
       ctl: RouterCtl[AppRouter.Page],
-      symbol: String
+      shouldLabel: Boolean,
+      symbol: Option[String]
   )
 
-  case class State(samples: List[Content])
+  case class State(samples: List[Content], labeledIDs: List[String])
 
   class Backend($ : BackendScope[Props, State]) {
     def setSamples(body: String): Callback = {
@@ -26,13 +27,15 @@ object SamplesPage {
       $.modState(_.copy(samples = samples.toList))
     }
 
-    def loadSamples(symbol: String): Callback =
-      Net
-        .getSamples(symbol)
-        .onComplete { xhr =>
-          stopLoading >> setSamples(xhr.responseText)
-        }
-        .asCallback
+    def loadData(shouldLabel: Boolean, symbol: Option[String]): Callback =
+      (if (shouldLabel) Net.getUnlabeled(10)
+       else Net.getSamples(symbol.get)).onComplete { xhr =>
+        stopLoading >> setSamples(xhr.responseText)
+      }.asCallback
+
+    def putLabel(contentID: String, label: Int): Callback =
+      Net.labelContent(contentID, label).asCallback >>
+        $.modState(s => s.copy(labeledIDs = contentID :: s.labeledIDs))
 
     def setLoading(v: Boolean) =
       $.props >>= { props =>
@@ -47,7 +50,9 @@ object SamplesPage {
 
     def reloadSamples =
       startLoading >>
-        ($.props.map(_.symbol) >>= loadSamples)
+        $.props.flatMap((props: Props) =>
+          loadData(props.shouldLabel, props.symbol)
+        )
 
     def mounted: Callback =
       reloadSamples
@@ -59,7 +64,31 @@ object SamplesPage {
         case _ => ""
       }
 
-    def renderContent(content: Content) =
+    def labelButtons(contentID: String) =
+      <.div(
+        <.button(
+          ^.onClick --> putLabel(contentID, 0),
+          ^.className := "button is-warning mr-3",
+          "Neutral"
+        ),
+        <.button(
+          ^.onClick --> putLabel(contentID, 1),
+          ^.className := "button is-success mr-3",
+          "Bull"
+        ),
+        <.button(
+          ^.onClick --> putLabel(contentID, 2),
+          ^.className := "button is-danger mr-3",
+          "Bear"
+        ),
+        <.button(
+          ^.onClick --> putLabel(contentID, -1),
+          ^.className := "button",
+          "?"
+        )
+      )
+
+    def renderContent(shouldLabel: Boolean, content: Content) =
       <.div(
         ^.className := "box",
         <.div(
@@ -68,11 +97,12 @@ object SamplesPage {
           <.p(content.body),
           <.p(<.strong("Symbols: "), content.parsed.symbols.mkString(", "))
             .when(!content.parsed.symbols.isEmpty),
+          labelButtons(content.id).when(shouldLabel),
           <.p(
             <.strong("Sentiment: "),
             renderSentiment(content.parsed.sentiment)
           )
-            .when(content.parsed.sentiment > 0)
+            .when(content.parsed.sentiment > 0 && !shouldLabel)
         )
       )
 
@@ -82,11 +112,18 @@ object SamplesPage {
       <.div(
         <.div(
           ^.className := "block",
+          props.symbol.map { symbol =>
+            <.button(
+              ^.onClick --> ctl.set(AppRouter.Details(symbol)),
+              ^.className := "button is-info",
+              <.i(^.className := "fas fa-arrow-left")
+            )
+          },
           <.button(
-            ^.onClick --> ctl.set(AppRouter.Details(props.symbol)),
+            ^.onClick --> ctl.set(AppRouter.Index),
             ^.className := "button is-info",
             <.i(^.className := "fas fa-arrow-left")
-          ),
+          ).when(props.shouldLabel),
           <.button(
             ^.onClick --> reloadSamples,
             ^.className := "button is-warning ml-3",
@@ -95,7 +132,9 @@ object SamplesPage {
         ),
         Loading.Content(state.samples.isEmpty),
         <.div(
-          state.samples.map(renderContent): _*
+          state.samples
+            .filter((c: Content) => !state.labeledIDs.contains(c.id))
+            .map(renderContent(props.shouldLabel, _)): _*
         )
       )
     }
@@ -103,7 +142,7 @@ object SamplesPage {
 
   val Component = ScalaComponent
     .builder[Props]
-    .initialState(State(List()))
+    .initialState(State(List(), List()))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted)
     .build

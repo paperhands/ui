@@ -10,6 +10,9 @@ object Net {
   private def get(p: String) =
     Ajax("GET", pref(p)).setRequestContentTypeJsonUtf8
 
+  private def put(p: String) =
+    Ajax("PUT", pref(p)).setRequestContentTypeJsonUtf8
+
   def getTrending(period: String) =
     get(s"api/v1/quote/trending/$period").send("")
 
@@ -21,4 +24,10 @@ object Net {
 
   def getSamples(symbol: String) =
     get(s"api/v1/content/sample/$symbol").send("")
+
+  def getUnlabeled(limit: Int) =
+    get(s"api/v1/content/unlabeled/$limit").send("")
+
+  def labelContent(contentID: String, label: Int) =
+    put(s"api/v1/content/label/$contentID/$label").send("")
 }
