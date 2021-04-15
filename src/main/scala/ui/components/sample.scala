@@ -69,17 +69,17 @@ object SamplesPage {
         <.button(
           ^.onClick --> putLabel(contentID, 0),
           ^.className := "button is-warning mr-3",
-          "Neutral"
+          "😐"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, 1),
           ^.className := "button is-success mr-3",
-          "Bull"
+          "🐂"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, 2),
           ^.className := "button is-danger mr-3",
-          "Bear"
+          "🐻"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, -1),
