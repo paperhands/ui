@@ -64,26 +64,33 @@ object SamplesPage {
         case _ => ""
       }
 
+    def dataTooltip =
+      VdomAttr("data-tooltip")
+
     def labelButtons(contentID: String) =
       <.div(
         <.button(
           ^.onClick --> putLabel(contentID, 0),
           ^.className := "button is-warning mr-3",
+          dataTooltip := "Neutral sentiment",
           "😐"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, 1),
           ^.className := "button is-success mr-3",
+          dataTooltip := "Bull sentiment",
           "🐂"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, 2),
           ^.className := "button is-danger mr-3",
+          dataTooltip := "Bear sentiment",
           "🐻"
         ),
         <.button(
           ^.onClick --> putLabel(contentID, -1),
           ^.className := "button",
+          dataTooltip := "No fucking clue whats going on here, ignore and never use in datasets",
           "?"
         )
       )
