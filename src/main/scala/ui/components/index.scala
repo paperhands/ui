@@ -149,7 +149,7 @@ object IndexPage {
           ^.className := "hero-body",
           <.p(
             ^.className := "title",
-            "Popularity of stonks on WSB"
+            "Popularity of stonks on WSB & Superstonk subreddits"
           ),
           <.div(
             ^.className := "subtitle",
