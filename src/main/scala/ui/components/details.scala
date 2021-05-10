@@ -102,7 +102,7 @@ object DetailsPage {
             <.p(details.desc),
             <.p(
               ^.className := "mt-3",
-              "WSB numbers:"
+              "Reddit numbers:"
             ),
             <.p(
               ^.className := "ml-3",
