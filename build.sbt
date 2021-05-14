@@ -3,7 +3,7 @@ val scalaJSDomVersion = "1.1.0"
 val diodeVersion = "1.1.14"
 val scalaReactVersion = "1.7.7"
 val monocleVersion = "3.0.0-M5"
-val minitestVersion = "2.9.5"
+val minitestVersion = "2.9.6"
 val reactVersion = "17.0.0"
 val echartsVersion = "5.0.2"
 
