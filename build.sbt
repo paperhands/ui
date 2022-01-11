@@ -1,4 +1,4 @@
-val _scalaVersion = "2.13.5"
+val _scalaVersion = "2.13.8"
 val scalaJSDomVersion = "1.2.0"
 val diodeVersion = "1.1.14"
 val scalaReactVersion = "1.7.7"
